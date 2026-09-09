@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+:root {
+  --wedding-color-background: #f7f0e7;
+  --wedding-color-surface: #fffaf4;
+  --wedding-color-text: #24171a;
+  --wedding-color-muted: #745f62;
+  --wedding-color-primary: #681c2f;
+  --wedding-color-accent: #b78a3b;
+  --wedding-color-border: #d9c8ba;
+  --wedding-radius-small: 0.25rem;
+  --wedding-radius-medium: 0.75rem;
+  --wedding-radius-large: 1.5rem;
+  --wedding-shadow-soft: 0 1.5rem 4rem rgb(61 32 38 / 10%);
+  --wedding-motion-fast: 160ms;
+  --wedding-motion-base: 320ms;
+  --wedding-motion-slow: 700ms;
+}
+
+@theme inline {
+  --color-background: var(--wedding-color-background);
+  --color-surface: var(--wedding-color-surface);
+  --color-foreground: var(--wedding-color-text);
+  --color-muted: var(--wedding-color-muted);
+  --color-primary: var(--wedding-color-primary);
+  --color-accent: var(--wedding-color-accent);
+  --color-border: var(--wedding-color-border);
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-display);
+  --font-script: var(--font-script);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--wedding-color-background);
+  color: var(--wedding-color-text);
+  font-family: var(--font-body), sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 0.1875rem solid var(--wedding-color-accent);
+  outline-offset: 0.25rem;
+}
+
+::selection {
+  background: var(--wedding-color-primary);
+  color: var(--wedding-color-surface);
+}
+
+@keyframes invitation-enter {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
