@@ -4,7 +4,7 @@ A production-oriented, mobile-first wedding invitation template built with Next.
 
 ## Current status
 
-Checkpoint 2 (foundation). The application intentionally displays explicit placeholders. Visual invitation sections and RSVP infrastructure are deferred to their approval checkpoints.
+Visual foundation and approved wedding-content integration are complete. Unapproved sections remain disabled or explicitly pending. Private household RSVP requirements are configured, but Supabase migrations, server operations, RLS policies, and RSVP tests have not been implemented yet.
 
 ## Local development
 

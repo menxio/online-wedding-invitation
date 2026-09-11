@@ -25,4 +25,4 @@ Configuration is parsed by Zod as the application loads. Visual components consu
 
 ## Checkpoint status
 
-The foundation currently includes typed configuration, theme-to-CSS-variable mapping, layout primitives, a countdown utility, and unit tests. Full invitation sections, Supabase, RSVP, and admin routes are deliberately not implemented yet.
+The project currently includes typed wedding configuration, theme-to-CSS-variable mapping, responsive invitation sections, configurable section ordering, media, the monogram system, a countdown utility, and unit tests. Supabase, private RSVP server operations, RLS policies/tests, and admin routes are deliberately not implemented yet.

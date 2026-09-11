@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { NEEDS_COUPLE_APPROVAL } from "./content-status";
 
 export const sectionIds = [
   "opening", "hero", "countdown", "invitation", "story", "events", "venue",
@@ -16,15 +17,31 @@ const optionalImageSchema = z.object({
 }).nullable();
 
 const weddingDateSchema = requiredText.refine(
-  (value) => value === "WEDDING_DATE" || !Number.isNaN(Date.parse(value)),
-  "Use WEDDING_DATE or a valid ISO 8601 date and time.",
+  (value) => value === "WEDDING_DATE" || value === NEEDS_COUPLE_APPROVAL || !Number.isNaN(Date.parse(value)),
+  `Use ${NEEDS_COUPLE_APPROVAL}, WEDDING_DATE, or a valid ISO 8601 date and time.`,
 );
 
 export const weddingConfigSchema = z.object({
-  couple: z.object({ partnerA: requiredText, partnerB: requiredText, initials: requiredText }),
+  couple: z.object({
+    fullNameA: requiredText,
+    fullNameB: requiredText,
+    partnerA: requiredText,
+    partnerB: requiredText,
+    initials: requiredText,
+  }),
+  motif: z.object({
+    name: requiredText,
+    colors: z.array(z.object({ name: requiredText, value: z.string().regex(/^#[0-9a-f]{6}$/i) })),
+    paletteStatus: z.literal("needsApproval"),
+  }),
   dateTime: weddingDateSchema,
   timezone: requiredText,
-  invitation: z.object({ eyebrow: requiredText, message: requiredText }),
+  dateTimeConflict: z.object({
+    status: z.literal("needsApproval"),
+    sources: z.array(z.object({ source: requiredText, value: requiredText })).min(2),
+  }),
+  invitation: z.object({ type: requiredText, eyebrow: requiredText, message: requiredText }),
+  opening: z.object({ image: optionalImageSchema }),
   hero: z.object({ image: optionalImageSchema, announcement: requiredText }),
   story: z.object({
     heading: requiredText,
@@ -36,6 +53,7 @@ export const weddingConfigSchema = z.object({
     title: requiredText,
     dateTime: weddingDateSchema,
     venue: requiredText,
+    location: requiredText,
     address: requiredText,
     directionsUrl: z.url().nullable(),
     notes: requiredText.nullable(),
@@ -50,10 +68,32 @@ export const weddingConfigSchema = z.object({
   }).nullable(),
   entourage: z.array(z.object({ role: requiredText, names: z.array(requiredText).min(1) })),
   gallery: z.array(optionalImageSchema.unwrap()),
+  galleryIntroduction: requiredText,
   faq: z.array(z.object({ question: requiredText, answer: requiredText })),
   closing: z.object({ message: requiredText, contact: requiredText }),
-  music: z.object({ title: requiredText, artist: requiredText, src: requiredText }).nullable(),
-  rsvp: z.object({ deadline: requiredText, privateInvitations: z.boolean() }),
+  music: z.object({
+    title: requiredText,
+    artist: requiredText,
+    requestedVersion: requiredText,
+    src: requiredText.nullable(),
+    sourceStatus: z.literal("needsApproval"),
+  }).nullable(),
+  rsvp: z.object({
+    deadline: requiredText,
+    privateInvitations: z.boolean(),
+    householdBased: z.boolean(),
+    plusOnesAllowed: z.boolean(),
+    childrenPolicy: z.literal("explicitEntourageInviteesOnly"),
+    implementationStatus: z.literal("notImplemented"),
+    allowResponseEdits: z.boolean().nullable(),
+    mealOptions: z.array(requiredText).nullable(),
+    copy: z.object({
+      invitation: requiredText,
+      confirmation: requiredText,
+      access: requiredText,
+      dietaryRestrictionsQuestion: requiredText,
+    }),
+  }),
 });
 
 const colorSchema = z.string().regex(/^#[0-9a-f]{6}$/i);

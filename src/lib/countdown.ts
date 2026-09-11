@@ -4,7 +4,9 @@ export type Countdown =
   | { status: "upcoming"; days: number; hours: number; minutes: number; seconds: number };
 
 export function getCountdown(target: string, now = new Date()): Countdown {
-  if (target === "WEDDING_DATE") return { status: "placeholder" };
+  if (target === "WEDDING_DATE" || target === "NEEDS COUPLE APPROVAL") {
+    return { status: "placeholder" };
+  }
 
   const remainingMilliseconds = new Date(target).getTime() - now.getTime();
   if (!Number.isFinite(remainingMilliseconds) || remainingMilliseconds <= 0) {

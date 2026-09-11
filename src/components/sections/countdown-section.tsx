@@ -4,12 +4,21 @@ import { useEffect, useState } from "react";
 import { getCountdown } from "@/lib/countdown";
 
 export function CountdownSection({ target }: { target: string }) {
-  const [countdown, setCountdown] = useState(() => getCountdown(target));
+  const [countdown, setCountdown] = useState<ReturnType<typeof getCountdown>>({
+    status: "placeholder",
+  });
 
   useEffect(() => {
-    if (target === "WEDDING_DATE") return;
-    const timer = window.setInterval(() => setCountdown(getCountdown(target)), 1000);
-    return () => window.clearInterval(timer);
+    if (target === "WEDDING_DATE" || target === "NEEDS COUPLE APPROVAL") return;
+
+    const updateCountdown = () => setCountdown(getCountdown(target));
+    const initialTick = window.setTimeout(updateCountdown, 0);
+    const timer = window.setInterval(updateCountdown, 1000);
+
+    return () => {
+      window.clearTimeout(initialTick);
+      window.clearInterval(timer);
+    };
   }, [target]);
 
   const values = countdown.status === "placeholder"

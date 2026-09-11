@@ -4,6 +4,7 @@ import { getCountdown } from "@/lib/countdown";
 describe("getCountdown", () => {
   it("preserves an explicit unknown wedding date", () => {
     expect(getCountdown("WEDDING_DATE")).toEqual({ status: "placeholder" });
+    expect(getCountdown("NEEDS COUPLE APPROVAL")).toEqual({ status: "placeholder" });
   });
 
   it("returns countdown parts", () => {

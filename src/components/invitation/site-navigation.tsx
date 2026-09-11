@@ -1,4 +1,5 @@
 import type { SectionsConfig, WeddingConfig } from "@/config";
+import { Monogram } from "@/components/brand/monogram";
 
 const navigationLabels = {
   invitation: "Invitation",
@@ -25,8 +26,8 @@ export function SiteNavigation({ wedding, sections }: SiteNavigationProps) {
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[#260a13]/95 text-white backdrop-blur-md">
       <div className="mx-auto flex h-16 w-full max-w-[90rem] items-center justify-between px-5 sm:px-8 lg:px-12">
-        <a href="#hero" className="max-w-[65vw] truncate font-serif text-xl tracking-[0.08em] text-white sm:text-2xl" aria-label="Return to invitation top">
-          {wedding.couple.initials}
+        <a href="#hero" className="inline-flex min-h-11 items-center" aria-label="Return to invitation top">
+          <Monogram initials={wedding.couple.initials} compact />
         </a>
         <nav className="hidden items-center gap-7 md:flex" aria-label="Wedding invitation">
           {links.map((id) => (

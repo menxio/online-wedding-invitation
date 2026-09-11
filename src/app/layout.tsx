@@ -5,6 +5,7 @@ import {
   Great_Vibes,
   Manrope,
 } from "next/font/google";
+import { weddingConfig } from "@/config";
 import "./globals.css";
 
 const displayFont = Cormorant_Garamond({
@@ -27,8 +28,8 @@ const scriptFont = Great_Vibes({
 });
 
 export const metadata: Metadata = {
-  title: "Wedding Invitation Template",
-  description: "A configurable digital wedding invitation.",
+  title: `${weddingConfig.couple.partnerA} & ${weddingConfig.couple.partnerB} | Wedding Invitation`,
+  description: `The wedding invitation of ${weddingConfig.couple.fullNameA} and ${weddingConfig.couple.fullNameB}.`,
   robots: { index: false, follow: false },
 };
 

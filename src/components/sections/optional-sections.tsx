@@ -39,8 +39,21 @@ export function EntourageSection({ wedding }: { wedding: WeddingConfig }) {
   return (
     <section id="entourage" aria-labelledby="entourage-title" className="bg-[#191719] py-[var(--wedding-spacing-section)] text-white">
       <Container>
-        <SectionHeading id="entourage-title" eyebrow="Our people" title="The wedding party" inverse />
-        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">{wedding.entourage.map((group) => <div key={group.role} className="border-t border-white/15 pt-6"><h3 className="font-sans text-xs tracking-[0.18em] text-accent uppercase">{group.role}</h3><ul className="mt-4 space-y-2 font-serif text-2xl text-white/80">{group.names.map((name) => <li key={name}>{name}</li>)}</ul></div>)}</div>
+        <SectionHeading id="entourage-title" eyebrow="Family & friends" title="Wedding entourage" inverse />
+        <div className="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2">
+          {wedding.entourage.map((group) => {
+            const isLargeGroup = group.names.length > 8;
+
+            return (
+              <div key={group.role} className={`border-t border-white/15 pt-6 ${isLargeGroup ? "sm:col-span-2" : ""}`}>
+                <h3 className="font-sans text-xs tracking-[0.18em] text-accent uppercase">{group.role}</h3>
+                <ul className={`mt-5 grid gap-x-10 gap-y-2 font-serif text-xl leading-8 text-white/80 sm:text-2xl ${isLargeGroup ? "md:grid-cols-2 xl:grid-cols-3" : ""}`}>
+                  {group.names.map((name) => <li key={name}>{name}</li>)}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
       </Container>
     </section>
   );

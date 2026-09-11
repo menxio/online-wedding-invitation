@@ -7,7 +7,7 @@ export function MusicControl({ music }: { music: WeddingConfig["music"] }) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  if (!music) return null;
+  if (!music?.src) return null;
 
   async function togglePlayback() {
     const audio = audioRef.current;

@@ -9,10 +9,7 @@ export function GallerySection({ wedding }: { wedding: WeddingConfig }) {
   return (
     <section id="gallery" aria-labelledby="gallery-title" className="overflow-hidden bg-[#f8f2e9] py-[var(--wedding-spacing-section)]">
       <Container>
-        <div className="grid items-end gap-10 lg:grid-cols-[1fr_1.2fr]">
-          <SectionHeading id="gallery-title" eyebrow="Through the lens" title="Moments we keep" description="GALLERY_INTRODUCTION" />
-          <p className="font-script text-right text-5xl text-accent lg:text-7xl" aria-hidden="true">Our forever</p>
-        </div>
+        <SectionHeading id="gallery-title" eyebrow="Engagement photographs" title="Gallery" />
         <div className="mt-14 columns-1 gap-4 sm:columns-2 lg:columns-3">
           {wedding.gallery.map((image, index) => (
             <figure key={image.src} className="group relative mb-4 break-inside-avoid overflow-hidden bg-[#ded2c4]">

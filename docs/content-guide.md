@@ -2,9 +2,11 @@
 
 ## Replace wedding facts
 
-Edit `src/config/wedding.ts`. Replace uppercase placeholders only with details approved by the couple. Dates must use ISO 8601 with an explicit offset, for example `2027-01-01T13:00:00+08:00`.
+Edit `src/config/wedding.ts`. Replace `NEEDS COUPLE APPROVAL` only with details approved by the couple. Once approved, dates must use ISO 8601 with an explicit offset, for example `2027-01-01T13:00:00+08:00`.
 
 Never commit private guest information to configuration or public JSON.
+
+The current date/time conflict and unresolved content are tracked in `docs/wedding-content-status.md`.
 
 ## Change the theme
 
