@@ -1,6 +1,7 @@
 import { isPendingApproval, type WeddingConfig } from "@/config";
 import { Container } from "@/components/layout/container";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { formatWeddingDateTime } from "@/lib/wedding-date";
 
 export function EventsSection({ wedding }: { wedding: WeddingConfig }) {
   return (
@@ -13,7 +14,7 @@ export function EventsSection({ wedding }: { wedding: WeddingConfig }) {
               <span className="font-sans text-[0.62rem] tracking-[0.22em] text-[#d7b66e] uppercase">0{index + 1}</span>
               <h3 className="mt-7 font-serif text-5xl leading-none sm:text-6xl">{event.title}</h3>
               {!isPendingApproval(event.dateTime) ? (
-                <p className="mt-8 font-sans text-xs tracking-[0.18em] text-[#d7b66e] uppercase">{event.dateTime}</p>
+                <p className="mt-8 font-sans text-xs tracking-[0.18em] text-[#d7b66e] uppercase">{formatWeddingDateTime(event.dateTime, wedding.timezone)}</p>
               ) : null}
               <p className="mt-6 font-serif text-2xl">{event.venue}</p>
               {!isPendingApproval(event.location) ? <p className="mt-2 font-sans text-sm text-white/70">{event.location}</p> : null}

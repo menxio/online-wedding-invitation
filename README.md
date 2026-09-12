@@ -1,10 +1,12 @@
 # Online Wedding Invitation
 
-A production-oriented, mobile-first wedding invitation template built with Next.js, TypeScript, and Tailwind CSS. One clone represents one wedding; wedding facts, theme tokens, section order, and optional sections are configuration-driven.
+A production-oriented, mobile-first wedding invitation for Michael and Marris, built with Next.js, TypeScript, Tailwind CSS, and Supabase. The repository can be cloned for another wedding; static wedding facts, theme tokens, section order, and optional sections remain configuration-driven.
 
 ## Current status
 
-Visual foundation and approved wedding-content integration are complete. Unapproved sections remain disabled or explicitly pending. Private household RSVP requirements are configured, but Supabase migrations, server operations, RLS policies, and RSVP tests have not been implemented yet.
+The invitation and shared-link RSVP are complete in source. Guests use the same `/rsvp` URL, enter a full name, and accept or decline one reserved seat. Supabase stores responses, enforces the deadline, provides database-backed rate limiting and RLS, and supports an authenticated coordinator dashboard with a safe CSV export.
+
+There is no authoritative guest list or guest authentication in the application. The couple controls RSVP access by sending the shared URL only to selected guests. As a result, the application cannot prove that a submitted name belongs to an invited person, and administrators reconcile duplicate or questionable responses manually.
 
 ## Local development
 
@@ -31,4 +33,8 @@ npm run build
 - Section order/toggles: `src/config/sections.ts`
 - Media: `public/wedding/`
 
-Do not replace placeholders with unapproved facts. See [the content guide](docs/content-guide.md) and [architecture notes](docs/architecture.md).
+Do not replace placeholders with unapproved facts. See the [content guide](docs/content-guide.md), [architecture notes](docs/architecture.md), and [RSVP security guide](docs/rsvp-security.md).
+
+## RSVP setup
+
+Copy `.env.example` to `.env.local`, configure Supabase, apply the migration, and create an authorized admin as described in [the deployment guide](docs/deployment.md). Never commit `.env.local`, real credentials, or exported RSVP data.

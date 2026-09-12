@@ -1,13 +1,11 @@
 # Wedding content status
 
-## Date and time conflict
+## Confirmed date and RSVP deadline
 
-The final wedding date and time need couple approval. Neither source is currently published as final, and the countdown is disabled.
+- Wedding: October 17, 2026 at 1:30 PM, Asia/Manila
+- RSVP deadline: October 5, 2026 at the end of the local day
 
-- Latest manually provided information: October 17, 2036 at 1:00 PM
-- `Invitation Details-Final.docx`: Saturday, October 17, 2026 at 1:30 PM
-
-The RSVP deadline is October 5, 2026. Confirm that it remains correct after resolving the wedding date.
+The earlier conflicting 2036 date is retired and must not be used.
 
 ## Approved content integrated
 
@@ -18,23 +16,19 @@ The RSVP deadline is October 5, 2026. Confirm that it remains correct after reso
 - Ceremony venue and Valencia City location
 - Reception venue and after-ceremony timing
 - Entourage names and roles
-- Private household RSVP requirement
-- No plus-ones
-- Children excluded except explicitly invited entourage members
+- Shared-link RSVP with one reserved seat per response
+- Adult-only celebration except for children in the wedding entourage
+- Exact RSVP seat/deadline wording
 - Requested song and artist
 - Engagement photographs
 
 ## Needs couple approval
 
-- Final wedding date, time, and timezone
-- Ceremony street address, map link, and ceremony time
+- Ceremony street address and map link
 - Reception location/address, map link, and exact time
 - Formal invitation and hero announcement wording
 - Exact shades-of-pink palette
 - Guest dress code
-- RSVP form, access, and confirmation wording
-- RSVP response-edit policy
-- Meal and dietary questions
 - Exact recording/source for the modern version of “Born for You” by David Pomeranz
 - Gallery introduction
 - FAQ content

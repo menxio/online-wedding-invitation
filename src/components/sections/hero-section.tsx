@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Monogram } from "@/components/brand/monogram";
 import { isPendingApproval, type WeddingConfig } from "@/config";
+import { formatWeddingDateTime } from "@/lib/wedding-date";
 
 export function HeroSection({ wedding }: { wedding: WeddingConfig }) {
   return (
@@ -29,7 +30,7 @@ export function HeroSection({ wedding }: { wedding: WeddingConfig }) {
         </div>
         <div className="flex flex-col items-center gap-5">
           {!isPendingApproval(wedding.dateTime) ? (
-            <p className="font-sans text-xs font-semibold tracking-[0.24em] uppercase">{wedding.dateTime}</p>
+            <p className="font-sans text-xs font-semibold tracking-[0.24em] uppercase">{formatWeddingDateTime(wedding.dateTime, wedding.timezone)}</p>
           ) : null}
           <a href="#events" className="inline-flex min-h-12 items-center justify-center border-b border-[#f0d698] px-2 font-sans text-[0.68rem] font-semibold tracking-[0.2em] uppercase">
             View wedding details

@@ -1,16 +1,45 @@
-# RSVP security
+# Shared-link RSVP security and operations
 
-RSVP infrastructure has not been implemented yet.
+## Product model
 
-The approved design is private household invitation access using opaque credentials. Guest data must be accessed through controlled server-side operations. Each household may see only its own invitation and eligible invitees; guest enumeration and cross-household access are prohibited.
+The couple manually sends the same `/rsvp` URL to selected guests. A guest enters a full name and chooses either “Joyfully accepts” or “Regretfully declines.” Every accepted submission creates one response representing exactly one reserved seat. There are no added attendees, response edits, guest accounts, codes, or unique links.
 
-Approved business rules:
+The wedding is adults-only except for children in the wedding entourage. Because the application has no authoritative guest list, that policy is controlled through link distribution rather than falsely enforced through website identity checks.
 
-- RSVP deadline: October 5, 2026, pending confirmation that it remains consistent with the final wedding date.
-- No arbitrary plus-ones.
-- Children are not invited unless they are explicitly named as members of the wedding entourage.
-- Household and invitee records, not frontend fields alone, must enforce eligibility.
+## Accepted limitation
 
-Still awaiting couple approval: RSVP wording, confirmation wording, response editing, meal options, dietary questions, and invitation-code wording.
+Because RSVP access is controlled by distribution of a shared URL and there is no authoritative guest list or guest authentication, the application cannot prove that a submitted guest name belongs to an invited person. The system instead focuses on protecting the RSVP database, preventing enumeration, limiting abuse, validating submissions, enforcing the deadline, and preventing guests from adding additional attendees.
 
-Supabase migrations and RLS tests will be added during the RSVP backend checkpoint after business rules are reviewed.
+Names are deliberately not unique. Duplicate names may be different people or repeated submissions; coordinators reconcile them manually.
+
+## Security model
+
+- The browser sends a small strict payload to `POST /api/rsvp/submit`; it never writes to Supabase directly.
+- The route limits the streamed body to 2 KiB, strictly validates with Zod, rejects unknown fields and a populated honeypot, and checks same-origin browser signals.
+- PostgreSQL-backed short-window and daily limits use an HMAC digest of the request address. Raw addresses are not stored.
+- The route and the atomic `submit_rsvp` PostgreSQL function enforce the deadline. The database function uses its own clock and a fixed `2026-10-05 23:59:59.999999+08` cutoff.
+- Guest-facing errors are generic. Responses never reveal existing names, totals, internal IDs, SQL errors, or rate-limit details.
+- RLS is enabled on all RSVP tables. `anon` has no table grants. Authenticated reads require the protected `rsvp_admin` application-metadata role.
+- The service-role key exists only in a `server-only` module and invokes only the public submit and limiter functions from the application backend.
+- RSVP and admin routes are dynamic/no-store where data is involved and carry no-index metadata or headers.
+
+## Supabase setup
+
+Apply `supabase/migrations/202609120001_shared_link_rsvp.sql`. Create a coordinator user in Supabase Auth, then assign the protected role in the SQL editor:
+
+```sql
+update auth.users
+set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb)
+  || '{"role":"rsvp_admin"}'::jsonb
+where email = 'COORDINATOR_EMAIL';
+```
+
+Do not use editable `user_metadata` for authorization. Sign out and back in after changing app metadata so the access token is refreshed.
+
+## Operations
+
+- Guests use `/rsvp` and cannot query submitted responses.
+- Coordinators sign in at `/admin`, review response totals, search/filter names, and export Guest Name / Attendance / Submitted At.
+- CSV cells beginning with spreadsheet formula characters are neutralized. Treat exports as private event data.
+- Periodically remove old `rsvp_rate_limits` windows if desired. Do not expose their digests to administrators.
+- If a response appears duplicated or questionable, reconcile it outside the guest-facing application. Do not infer identity from a name or request-address digest.
