@@ -15,17 +15,27 @@ Names are deliberately not unique. Duplicate names may be different people or re
 ## Security model
 
 - The browser sends a small strict payload to `POST /api/rsvp/submit`; it never writes to Supabase directly.
-- The route limits the streamed body to 2 KiB, strictly validates with Zod, rejects unknown fields and a populated honeypot, and checks same-origin browser signals.
-- PostgreSQL-backed short-window and daily limits use an HMAC digest of the request address. Raw addresses are not stored.
+- The route limits the streamed body to 4 KiB, strictly validates with Zod, rejects unknown fields and a populated honeypot, and checks same-origin browser signals.
+- Cloudflare Turnstile Managed mode adds a low-friction human verification. Its single-use token is validated server-side and scoped to the RSVP action before database work occurs.
+- PostgreSQL-backed limits allow 10 submissions per minute, 30 per ten minutes, and 100 per day for each HMAC-digested request address. This accommodates shared family/office networks while containing sustained abuse; raw addresses are not stored.
 - The route and the atomic `submit_rsvp` PostgreSQL function enforce the deadline. The database function uses its own clock and a fixed `2026-10-05 23:59:59.999999+08` cutoff.
 - Guest-facing errors are generic. Responses never reveal existing names, totals, internal IDs, SQL errors, or rate-limit details.
 - RLS is enabled on all RSVP tables. `anon` has no table grants. Authenticated reads require the protected `rsvp_admin` application-metadata role.
-- The service-role key exists only in a `server-only` module and invokes only the public submit and limiter functions from the application backend.
+- The elevated Supabase secret key exists only in a `server-only` module and invokes only the public submit and limiter functions from the application backend.
 - RSVP and admin routes are dynamic/no-store where data is involved and carry no-index metadata or headers.
 
 ## Supabase setup
 
-Apply `supabase/migrations/202609120001_shared_link_rsvp.sql`. Create a coordinator user in Supabase Auth, then assign the protected role in the SQL editor:
+Link and verify the staging project before applying migrations:
+
+```bash
+npx supabase link --project-ref YOUR_PROJECT_REF
+npx supabase db push --linked --dry-run
+npx supabase db push --linked
+npx supabase test db --linked
+```
+
+Disable public sign-ups in Supabase Authentication settings. Create a coordinator user manually in Supabase Auth, then assign the protected role in the SQL editor:
 
 ```sql
 update auth.users

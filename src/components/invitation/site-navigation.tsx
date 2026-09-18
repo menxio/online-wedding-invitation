@@ -3,14 +3,16 @@ import { Monogram } from "@/components/brand/monogram";
 
 const navigationLabels = {
   invitation: "Invitation",
-  events: "Details",
+  events: "Schedule",
   venue: "Venue",
+  details: "Details",
   gallery: "Gallery",
   rsvp: "RSVP",
   story: "Story",
   dressCode: "Attire",
   entourage: "Entourage",
   faq: "FAQ",
+  giftGuide: "Gifts",
 } as const;
 
 type SiteNavigationProps = {
@@ -29,14 +31,14 @@ export function SiteNavigation({ wedding, sections }: SiteNavigationProps) {
         <a href="#hero" className="inline-flex min-h-11 items-center" aria-label="Return to invitation top">
           <Monogram initials={wedding.couple.initials} compact />
         </a>
-        <nav className="hidden items-center gap-7 md:flex" aria-label="Wedding invitation">
+        <nav className="hidden items-center gap-7 xl:flex" aria-label="Wedding invitation">
           {links.map((id) => (
             <a key={id} href={`#${id}`} className="font-sans text-[0.68rem] font-semibold tracking-[0.18em] text-white/75 uppercase transition-colors hover:text-white">
               {navigationLabels[id]}
             </a>
           ))}
         </nav>
-        <details className="group relative md:hidden">
+        <details className="group relative xl:hidden">
           <summary className="flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center font-sans text-xs tracking-[0.16em] uppercase">
             Menu
           </summary>

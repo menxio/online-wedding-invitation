@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { createElement } from "react";
+import { render, screen } from "@testing-library/react";
 import { sectionsConfig, themeConfig, weddingConfig } from "@/config";
+import { VenueSection } from "@/components/sections/venue-section";
 import {
   sectionsConfigSchema,
   themeConfigSchema,
@@ -44,7 +47,7 @@ describe("template configuration", () => {
       "San Agustin Parish Valencia City",
       "Jocel's Garden",
     ]);
-    expect(weddingConfig.entourage.find((group) => group.role === "Principal Sponsors — Ninong")?.names).toHaveLength(20);
+    expect(weddingConfig.entourage.find((group) => group.role === "Principal Sponsors — Ninong")?.names).toHaveLength(21);
     expect(weddingConfig.entourage.find((group) => group.role === "Principal Sponsors — Ninang")?.names).toHaveLength(21);
     expect(sectionsConfig.enabled.entourage).toBe(true);
     expect(sectionsConfig.enabled.story).toBe(false);
@@ -61,5 +64,41 @@ describe("template configuration", () => {
       allowResponseEdits: false,
     });
     expect(weddingConfig.rsvp.copy.seatNotice).toBe("We have reserved 1 seat for you. We request your reply on or before October 5, 2026.");
+  });
+
+  it("publishes the approved guest guidance and supplied gift and music assets", () => {
+    expect(weddingConfig.motif.name).toBe("Shades of pink");
+    expect(weddingConfig.dressCode?.title).toBe("What to wear");
+    expect(weddingConfig.dressCode?.colors).toHaveLength(5);
+    expect(weddingConfig.dressCode?.colors[0]).toMatchObject({
+      name: "Bridal Rose",
+      value: "#d69fa2",
+      featured: true,
+    });
+    expect(weddingConfig.details.items).toHaveLength(5);
+    expect(weddingConfig.faq.length).toBeGreaterThanOrEqual(6);
+    expect(weddingConfig.giftGuide.accounts).toEqual([
+      expect.objectContaining({
+        label: "BPI · Michael",
+        image: expect.objectContaining({ src: "/wedding/gifts/bpi-michael-qr.jpg" }),
+      }),
+    ]);
+    expect(weddingConfig.music).toMatchObject({
+      title: "Born For You",
+      artist: "Wedding recording",
+      src: "/music/born-for-you.mp3",
+      spotifyUrl: null,
+      sourceStatus: "approved",
+    });
+    expect(sectionsConfig.enabled.giftGuide).toBe(true);
+    expect(sectionsConfig.enabled.faq).toBe(true);
+  });
+
+  it("publishes directions and keeps venue maps collapsed until requested", () => {
+    render(createElement(VenueSection, { wedding: weddingConfig }));
+    expect(screen.queryByText(/map link pending/i)).not.toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /get directions/i })).toHaveLength(2);
+    expect(screen.getAllByRole("button", { name: /view map/i })).toHaveLength(2);
+    expect(screen.queryByTitle(/map showing/i)).not.toBeInTheDocument();
   });
 });

@@ -1,6 +1,14 @@
 import { NEEDS_COUPLE_APPROVAL } from "./content-status";
 import { weddingConfigSchema } from "./schema";
 
+const attirePalette = [
+  { name: "Bridal Rose", value: "#d69fa2", featured: true },
+  { name: "Dusty Rose", value: "#c58e96", featured: false },
+  { name: "Mauve Blush", value: "#aa737d", featured: false },
+  { name: "Petal Pink", value: "#e7bcc0", featured: false },
+  { name: "Champagne Blush", value: "#ead8c6", featured: false },
+] as const;
+
 export const weddingConfig = weddingConfigSchema.parse({
   couple: {
     fullNameA: "Michael Allen R. Rubiato",
@@ -11,7 +19,7 @@ export const weddingConfig = weddingConfigSchema.parse({
   },
   motif: {
     name: "Shades of pink",
-    colors: [],
+    colors: attirePalette.map(({ name, value }) => ({ name, value })),
     paletteStatus: "needsApproval",
   },
   dateTime: "2026-10-17T13:30:00+08:00",
@@ -48,9 +56,17 @@ export const weddingConfig = weddingConfigSchema.parse({
       title: "Ceremony",
       dateTime: "2026-10-17T13:30:00+08:00",
       venue: "San Agustin Parish Valencia City",
-      location: "Valencia City",
+      location: "Valencia City, Bukidnon",
       address: NEEDS_COUPLE_APPROVAL,
-      directionsUrl: null,
+      image: {
+        src: "/wedding/venues/ceremony.jpg",
+        alt: "Exterior of San Agustin Parish in Valencia City",
+        width: 1170,
+        height: 730,
+        focalPosition: "center",
+      },
+      directionsUrl: "https://maps.app.goo.gl/fkcdygwL9tLH9ad66",
+      mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.883674619401!2d125.0913191750062!3d7.907219392115948!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ff1962abb39995%3A0x2fbc70e7856634c!2sSan%20Agust%C3%ADn%20Parish!5e0!3m2!1sen!2sph!4v1789738142048!5m2!1sen!2sph",
       notes: null,
     },
     {
@@ -58,13 +74,62 @@ export const weddingConfig = weddingConfigSchema.parse({
       title: "Reception",
       dateTime: NEEDS_COUPLE_APPROVAL,
       venue: "Jocel's Garden",
-      location: NEEDS_COUPLE_APPROVAL,
+      location: "Valencia City, Bukidnon",
       address: NEEDS_COUPLE_APPROVAL,
-      directionsUrl: null,
+      image: {
+        src: "/wedding/venues/reception.jpg",
+        alt: "Garden entrance at Jocel's Garden in Valencia City",
+        width: 447,
+        height: 447,
+        focalPosition: "center",
+      },
+      directionsUrl: "https://maps.app.goo.gl/KVceQBvVFqo6xo4g6",
+      mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.961714101419!2d125.08997402113138!3d7.899068884359655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ff197a411877af%3A0x552bc9a93a4c301d!2sJocel's%20Garden!5e0!3m2!1sen!2sph!4v1789737758486!5m2!1sen!2sph",
       notes: "After the church ceremony",
     },
   ],
-  dressCode: null,
+  dressCode: {
+    title: "What to wear",
+    description: "Inspired by timeless romance and effortless elegance, we invite you to dress in formal attire using the shades shown below.",
+    colors: attirePalette,
+    guidance: [
+      {
+        title: "Ladies",
+        description: "Formal dresses, elegant jumpsuits, or refined separates in the wedding palette.",
+      },
+      {
+        title: "Gentlemen",
+        description: "Suits, barongs, or long-sleeved formal attire in soft neutral or coordinated tones.",
+      },
+    ],
+  },
+  details: {
+    eyebrow: "The details",
+    title: "A thoughtful celebration",
+    introduction: "To help us celebrate comfortably with everyone invited, please take note of these important details before sending your response.",
+    items: [
+      {
+        title: "One response, one seat",
+        description: "This invitation and each completed RSVP are for one invited guest and one reserved seat only.",
+      },
+      {
+        title: "No RSVP, no reserved seat",
+        description: "Due to venue capacity and budget considerations, we can only accommodate guests who confirm on or before the deadline.",
+      },
+      {
+        title: "Invited guests only",
+        description: "Our guest list is strictly limited. Please do not bring an uninvited companion or transfer your reserved seat to another person.",
+      },
+      {
+        title: "An adults-only celebration",
+        description: "We kindly request an adults-only celebration, except for children who are included in the wedding entourage.",
+      },
+      {
+        title: "Reply by October 5",
+        description: "Please respond by October 5, 2026. If we do not hear from you by then, we will understand that you are unable to attend.",
+      },
+    ],
+  },
   entourage: [
     {
       role: "Parents of the Groom",
@@ -97,6 +162,7 @@ export const weddingConfig = weddingConfigSchema.parse({
         "Mr. Severiano D. Binalhay",
         "Mr. Luchinvar A. Montejo",
         "Mr. Anjero V. Marcia",
+        "Mr. Rense R. Remo",
       ],
     },
     {
@@ -186,17 +252,64 @@ export const weddingConfig = weddingConfigSchema.parse({
     { src: "/wedding/gallery/image11.jpg", alt: "Michael and Marris posing beneath tall trees", width: 3445, height: 5168, focalPosition: "center" },
   ],
   galleryIntroduction: NEEDS_COUPLE_APPROVAL,
-  faq: [],
+  giftGuide: {
+    eyebrow: "With grateful hearts",
+    title: "Gift guide",
+    message: "With all that we have, we have been truly blessed. Your presence and prayers are all that we request. If you desire to give nonetheless, a monetary gift is one we humbly suggest.",
+    accounts: [
+      {
+        label: "BPI · Michael",
+        image: {
+          src: "/wedding/gifts/bpi-michael-qr.jpg",
+          alt: "BPI transfer QR code for Michael, with the account number ending in 115",
+          width: 1146,
+          height: 1135,
+          focalPosition: "center",
+        },
+      },
+    ],
+  },
+  faq: [
+    {
+      question: "How many seats are reserved for me?",
+      answer: "This invitation and each completed RSVP are for one invited guest and one reserved seat only.",
+    },
+    {
+      question: "Can I bring a plus one?",
+      answer: "Our guest list is strictly limited to invited guests, so we cannot accommodate uninvited companions.",
+    },
+    {
+      question: "Can I bring my children?",
+      answer: "We are having an adults-only celebration, except for children who are included in the wedding entourage.",
+    },
+    {
+      question: "What is the dress code?",
+      answer: "Formal attire is requested. We encourage guests to dress in shades of pink to complement the wedding motif.",
+    },
+    {
+      question: "When is the RSVP deadline?",
+      answer: "Please reply on or before October 5, 2026 so the couple can finalize the seating arrangements and guest count.",
+    },
+    {
+      question: "What happens if I do not RSVP?",
+      answer: "No response by the deadline means that no seat will be reserved. We will understand that you are unable to attend.",
+    },
+    {
+      question: "Do you have a gift registry?",
+      answer: "Your presence and prayers are already a gift. If you would still like to give, a monetary gift is humbly appreciated.",
+    },
+  ],
   closing: {
     message: NEEDS_COUPLE_APPROVAL,
     contact: NEEDS_COUPLE_APPROVAL,
   },
   music: {
-    title: "Born for You",
-    artist: "David Pomeranz",
-    requestedVersion: "Modern version",
-    src: null,
-    sourceStatus: "needsApproval",
+    title: "Born For You",
+    artist: "Wedding recording",
+    requestedVersion: "Personal recording",
+    src: "/music/born-for-you.mp3",
+    spotifyUrl: null,
+    sourceStatus: "approved",
   },
   rsvp: {
     deadline: "October 5, 2026",

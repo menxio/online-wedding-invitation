@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { RSVP_NAME_MAX_LENGTH } from "./constants";
+import { RSVP_NAME_MAX_LENGTH, TURNSTILE_TOKEN_MAX_LENGTH } from "./constants";
 
 const honeypot = z.string().max(0).optional().default("");
 
@@ -9,6 +9,7 @@ export const rsvpSubmissionSchema = z.object({
   guestName: z.string().trim().min(2).max(RSVP_NAME_MAX_LENGTH).transform((value) => value.replace(/\s+/g, " ")),
   attendance: attendanceSchema,
   company: honeypot,
+  turnstileToken: z.string().min(1).max(TURNSTILE_TOKEN_MAX_LENGTH),
 }).strict();
 
 export type RsvpSubmission = z.infer<typeof rsvpSubmissionSchema>;

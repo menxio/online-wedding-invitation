@@ -13,10 +13,19 @@ type PetalStyle = CSSProperties & {
   "--petal-scale": number;
 };
 
-export function FallingPetals() {
+type FallingPetalsProps = {
+  density?: "full" | "sparse";
+  className?: string;
+};
+
+export function FallingPetals({ density = "full", className = "" }: FallingPetalsProps) {
+  const visiblePetals = density === "sparse"
+    ? petals.filter((_, index) => index % 2 === 0)
+    : petals;
+
   return (
-    <div className="petal-field pointer-events-none absolute inset-0 z-20 overflow-hidden" aria-hidden="true">
-      {petals.map(([left, delay, duration, scale], index) => {
+    <div className={`petal-field pointer-events-none absolute inset-0 z-20 overflow-hidden ${className}`} aria-hidden="true">
+      {visiblePetals.map(([left, delay, duration, scale], index) => {
         const style: PetalStyle = {
           "--petal-left": `${left}%`,
           "--petal-delay": `-${delay}s`,

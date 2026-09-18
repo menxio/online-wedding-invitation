@@ -3,7 +3,8 @@ import { NEEDS_COUPLE_APPROVAL } from "./content-status";
 
 export const sectionIds = [
   "opening", "hero", "countdown", "invitation", "story", "events", "venue",
-  "dressCode", "entourage", "gallery", "rsvp", "faq", "closing", "music",
+  "details", "dressCode", "entourage", "gallery", "giftGuide", "rsvp", "faq",
+  "closing", "music",
 ] as const;
 
 export const sectionIdSchema = z.enum(sectionIds);
@@ -55,7 +56,15 @@ export const weddingConfigSchema = z.object({
     venue: requiredText,
     location: requiredText,
     address: requiredText,
+    image: optionalImageSchema,
     directionsUrl: z.url().nullable(),
+    mapEmbedUrl: z.url().refine(
+      (value) => {
+        const url = new URL(value);
+        return url.hostname === "www.google.com" && url.pathname === "/maps/embed";
+      },
+      "Use a Google Maps embed URL.",
+    ).nullable(),
     notes: requiredText.nullable(),
   })),
   dressCode: z.object({
@@ -64,11 +73,34 @@ export const weddingConfigSchema = z.object({
     colors: z.array(z.object({
       name: requiredText,
       value: z.string().regex(/^#[0-9a-f]{6}$/i),
+      featured: z.boolean().default(false),
     })),
+    guidance: z.array(z.object({
+      title: requiredText,
+      description: requiredText,
+    })).min(1),
   }).nullable(),
+  details: z.object({
+    eyebrow: requiredText,
+    title: requiredText,
+    introduction: requiredText,
+    items: z.array(z.object({
+      title: requiredText,
+      description: requiredText,
+    })).min(1),
+  }),
   entourage: z.array(z.object({ role: requiredText, names: z.array(requiredText).min(1) })),
   gallery: z.array(optionalImageSchema.unwrap()),
   galleryIntroduction: requiredText,
+  giftGuide: z.object({
+    eyebrow: requiredText,
+    title: requiredText,
+    message: requiredText,
+    accounts: z.array(z.object({
+      label: requiredText,
+      image: optionalImageSchema.unwrap(),
+    })),
+  }),
   faq: z.array(z.object({ question: requiredText, answer: requiredText })),
   closing: z.object({ message: requiredText, contact: requiredText }),
   music: z.object({
@@ -76,7 +108,11 @@ export const weddingConfigSchema = z.object({
     artist: requiredText,
     requestedVersion: requiredText,
     src: requiredText.nullable(),
-    sourceStatus: z.literal("needsApproval"),
+    spotifyUrl: z.url().refine(
+      (value) => new URL(value).hostname === "open.spotify.com",
+      "Use a full open.spotify.com URL.",
+    ).nullable(),
+    sourceStatus: z.enum(["needsApproval", "approved"]),
   }).nullable(),
   rsvp: z.object({
     deadline: requiredText,

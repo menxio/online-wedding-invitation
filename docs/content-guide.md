@@ -34,7 +34,17 @@ public/wedding/
   gallery/
   entourage/
   details/
+  gifts/
   music/
 ```
 
 Keep original photographs outside Git when they are excessively large. Export web-ready versions with meaningful alt text and record focal positioning in wedding configuration.
+
+Gift QR images belong in `public/wedding/gifts/` and are listed in `giftGuide.accounts`. The section intentionally renders no empty QR placeholders.
+
+Music supports two delivery modes in `wedding.music`:
+
+- `spotifyUrl` displays Spotify's guest-controlled embedded player.
+- `src` displays a site-wide play/pause control for an audio file the couple is permitted to publish.
+
+Do not rely on audible autoplay. Browser policies can block playback until a guest interacts with the page.

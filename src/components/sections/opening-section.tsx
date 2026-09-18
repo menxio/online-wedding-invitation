@@ -1,9 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import { Monogram } from "@/components/brand/monogram";
 import { FallingPetals } from "@/components/effects/falling-petals";
 import { isPendingApproval, type WeddingConfig } from "@/config";
 
 export function OpeningSection({ wedding }: { wedding: WeddingConfig }) {
+  function openInvitation() {
+    window.dispatchEvent(new Event("wedding:open-invitation"));
+  }
+
   return (
     <section id="opening" className="relative isolate flex min-h-[calc(100svh-4rem)] items-center justify-center overflow-hidden bg-[#260a13] px-5 py-16 text-center text-white">
       {wedding.opening.image ? (
@@ -26,7 +32,7 @@ export function OpeningSection({ wedding }: { wedding: WeddingConfig }) {
         {!isPendingApproval(wedding.hero.announcement) ? (
           <p className="-mt-3 max-w-sm font-serif text-lg leading-8 text-white/75 italic sm:text-xl">{wedding.hero.announcement}</p>
         ) : null}
-        <a href="#hero" className="mt-8 inline-flex min-h-12 items-center justify-center border border-[#d7b66e] bg-[#260a13]/25 px-8 font-sans text-[0.68rem] font-semibold tracking-[0.24em] text-[#fff9f1] uppercase backdrop-blur-sm transition-colors hover:bg-[#d7b66e] hover:text-[#260a13]">
+        <a href="#hero" onClick={openInvitation} className="mt-8 inline-flex min-h-12 items-center justify-center border border-[#d7b66e] bg-[#260a13]/25 px-8 font-sans text-[0.68rem] font-semibold tracking-[0.24em] text-[#fff9f1] uppercase backdrop-blur-sm transition-colors hover:bg-[#d7b66e] hover:text-[#260a13]">
           Open invitation
         </a>
       </div>

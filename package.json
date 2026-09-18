@@ -12,6 +12,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@marsidev/react-turnstile": "1.6.1",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.116.0",
     "next": "16.3.4",
@@ -30,6 +31,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
     "jsdom": "^29.1.1",
+    "supabase": "2.117.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.11"

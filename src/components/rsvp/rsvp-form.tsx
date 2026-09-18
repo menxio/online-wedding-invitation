@@ -1,16 +1,21 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
+import { RSVP_MESSAGES } from "@/lib/rsvp/constants";
 import type { Attendance } from "@/lib/rsvp/schemas";
 
 type RsvpFormProps = {
   closed: boolean;
   confirmationCopy: string;
+  turnstileSiteKey: string;
 };
 
-export function RsvpForm({ closed, confirmationCopy }: RsvpFormProps) {
+export function RsvpForm({ closed, confirmationCopy, turnstileSiteKey }: RsvpFormProps) {
+  const turnstileRef = useRef<TurnstileInstance | null>(null);
   const [attendance, setAttendance] = useState<Attendance | "">("");
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   const [complete, setComplete] = useState(false);
@@ -22,25 +27,38 @@ export function RsvpForm({ closed, confirmationCopy }: RsvpFormProps) {
     const form = new FormData(event.currentTarget);
     const guestName = String(form.get("guestName") ?? "").trim();
     if (guestName.length < 2 || !attendance) {
-      setError("Please enter your full name and choose a response.");
+      setError(RSVP_MESSAGES.invalidResponse);
+      return;
+    }
+    if (!turnstileToken) {
+      setError(RSVP_MESSAGES.verificationRequired);
       return;
     }
 
     setPending(true);
+    let submitted = false;
     try {
       const response = await fetch("/api/rsvp/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ guestName, attendance, company: form.get("company") }),
+        body: JSON.stringify({ guestName, attendance, company: form.get("company"), turnstileToken }),
       });
-      const result = await response.json() as { error?: string };
-      if (!response.ok) throw new Error(result.error ?? "Unable to submit your RSVP.");
+      const result = await response.json().catch(() => null) as { error?: string } | null;
+      if (!response.ok) {
+        setError(result?.error ?? RSVP_MESSAGES.unavailable);
+        return;
+      }
+      submitted = true;
       setComplete(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Unable to submit your RSVP. Please try again.");
+    } catch {
+      setError(RSVP_MESSAGES.unavailable);
     } finally {
       setPending(false);
+      if (!submitted) {
+        setTurnstileToken("");
+        turnstileRef.current?.reset();
+      }
     }
   }
 
@@ -76,7 +94,7 @@ export function RsvpForm({ closed, confirmationCopy }: RsvpFormProps) {
         placeholder="Enter your full name"
       />
 
-      <fieldset className="mt-8" disabled={closed || pending}>
+      <fieldset className="mt-8" disabled={closed || pending} aria-describedby={error ? "rsvp-error" : undefined}>
         <legend className="font-sans text-[0.65rem] font-semibold tracking-[0.2em] text-[#d7b66e] uppercase">Will you be joining us?</legend>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {(["attending", "declining"] as const).map((value) => (
@@ -87,6 +105,36 @@ export function RsvpForm({ closed, confirmationCopy }: RsvpFormProps) {
           ))}
         </div>
       </fieldset>
+
+      <div className="mt-6 min-h-[4.1rem]">
+        <Turnstile
+          ref={turnstileRef}
+          siteKey={turnstileSiteKey}
+          onSuccess={(token) => {
+            setTurnstileToken(token);
+            setError((current) => (
+              current === RSVP_MESSAGES.verificationRequired || current === RSVP_MESSAGES.verificationFailed
+                ? ""
+                : current
+            ));
+          }}
+          onExpire={() => setTurnstileToken("")}
+          onError={() => {
+            setTurnstileToken("");
+            setError(RSVP_MESSAGES.verificationFailed);
+          }}
+          options={{
+            action: "rsvp_submit",
+            appearance: "interaction-only",
+            responseField: false,
+            size: "flexible",
+            theme: "dark",
+          }}
+        />
+        <p className="mt-2 font-sans text-xs text-white/50" aria-live="polite">
+          {turnstileToken ? "Security check complete." : "Completing security checkâ€¦"}
+        </p>
+      </div>
 
       <div className="mt-5 min-h-6" aria-live="polite">
         {error ? <p id="rsvp-error" role="alert" className="border-l-2 border-[#e9a8b1] pl-3 font-sans text-sm leading-6 text-[#ffdce1]">{error}</p> : null}

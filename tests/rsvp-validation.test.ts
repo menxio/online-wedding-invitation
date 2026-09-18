@@ -3,7 +3,7 @@ import { RSVP_DEADLINE_ISO, RSVP_NAME_MAX_LENGTH } from "@/lib/rsvp/constants";
 import { isRsvpOpen } from "@/lib/rsvp/deadline";
 import { parseJsonWithLimit, readJsonWithLimit, rsvpSubmissionSchema } from "@/lib/rsvp/schemas";
 
-const valid = { guestName: "Michael Guest", attendance: "attending", company: "" };
+const valid = { guestName: "Michael Guest", attendance: "attending", company: "", turnstileToken: "test-token" };
 
 describe("shared-link RSVP validation", () => {
   it.each(["attending", "declining"])("accepts a valid %s response", (attendance) => {

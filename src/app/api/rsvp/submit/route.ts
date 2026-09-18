@@ -1,10 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { RSVP_DEADLINE_ISO, RSVP_MESSAGES, RSVP_REQUEST_MAX_BYTES } from "@/lib/rsvp/constants";
+import { RSVP_DEADLINE_ISO, RSVP_MESSAGES, RSVP_RATE_LIMITS, RSVP_REQUEST_MAX_BYTES } from "@/lib/rsvp/constants";
 import { isRsvpOpen } from "@/lib/rsvp/deadline";
-import { PRIVATE_RESPONSE_HEADERS, isSameOrigin, rateLimitKey } from "@/lib/rsvp/request";
+import { PRIVATE_RESPONSE_HEADERS, isSameOrigin, rateLimitKey, requestAddress } from "@/lib/rsvp/request";
 import { consumeRateLimit } from "@/lib/rsvp/rate-limit";
 import { readJsonWithLimit, rsvpSubmissionSchema } from "@/lib/rsvp/schemas";
 import { createServiceClient } from "@/lib/supabase/service";
+import { verifyTurnstileToken } from "@/lib/turnstile/verify";
 
 export const dynamic = "force-dynamic";
 
@@ -29,12 +30,14 @@ export async function POST(request: NextRequest) {
       return respond({ error: RSVP_MESSAGES.invalidResponse }, 400);
     }
 
+    const verified = await verifyTurnstileToken(parsed.data.turnstileToken, requestAddress(request));
+    if (!verified) return respond({ error: RSVP_MESSAGES.verificationFailed }, 403);
+
     const limiterKey = rateLimitKey(request, "rsvp-submit");
-    const [shortWindowAllowed, dailyAllowed] = await Promise.all([
-      consumeRateLimit(limiterKey, "rsvp_submit_short", 5, 600),
-      consumeRateLimit(limiterKey, "rsvp_submit_daily", 20, 86_400),
-    ]);
-    if (!shortWindowAllowed || !dailyAllowed) {
+    const allowed = await Promise.all(RSVP_RATE_LIMITS.map(({ action, maxAttempts, windowSeconds }) => (
+      consumeRateLimit(limiterKey, action, maxAttempts, windowSeconds)
+    )));
+    if (allowed.includes(false)) {
       return respond({ error: RSVP_MESSAGES.rateLimited }, 429);
     }
 
