@@ -41,18 +41,13 @@ select results_eq(
 );
 
 reset role;
-select lives_ok(
-  $$select public.assert_rsvp_open('2026-10-05 23:59:59+08'::timestamptz)$$,
-  'database deadline permits a response before the cutoff'
+select is_empty(
+  $$select 1 from pg_proc where proname = 'assert_rsvp_open'$$,
+  'the obsolete hard-deadline function has been removed'
 );
-select throws_ok(
-  $$select public.assert_rsvp_open('2026-10-06 00:00:00+08'::timestamptz)$$,
-  'P0001', 'RSVP_DEADLINE_PASSED', 'database deadline rejects a late response'
-);
-
-select isnt_empty(
-  $$select 1 from pg_proc where proname = 'submit_rsvp' and prosrc like '%clock_timestamp()%'$$,
-  'the atomic RSVP mutation checks the database clock'
+select is_empty(
+  $$select 1 from pg_proc where proname = 'submit_rsvp' and prosrc like '%assert_rsvp_open%'$$,
+  'the RSVP mutation does not enforce the requested reply-by date'
 );
 select isnt_empty(
   $$select 1 from pg_proc where proname = 'submit_rsvp' and prosecdef$$,

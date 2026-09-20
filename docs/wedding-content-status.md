@@ -1,9 +1,9 @@
 # Wedding content status
 
-## Confirmed date and RSVP deadline
+## Confirmed date and requested RSVP date
 
 - Wedding: October 17, 2026 at 1:30 PM, Asia/Manila
-- RSVP deadline: October 5, 2026 at the end of the local day
+- Requested RSVP date: October 5, 2026. This remains visible to guests, but late submissions stay open.
 
 The earlier conflicting 2036 date is retired and must not be used.
 
@@ -18,12 +18,12 @@ The earlier conflicting 2036 date is retired and must not be used.
 - Entourage names and roles
 - Shared-link RSVP with one reserved seat per response
 - Adult-only celebration except for children in the wedding entourage
-- Exact RSVP seat/deadline wording
+- Exact RSVP seat/reply-by wording
 - Formal-attire guidance using the shades-of-pink motif
-- Guest guidance covering one seat, no uninvited companions, the adults-only policy, and the RSVP deadline
+- Guest guidance covering one seat, no uninvited companions, the adults-only policy, and the requested RSVP date
 - Gift-guide wording
 - Frequently asked questions based on the approved guest policies
-- Approved Spotify recording: “Born For You” by Khel Pangilinan
+- Approved local “Born For You” wedding recording with a guest-controlled play/pause button
 - Engagement photographs
 
 ## Needs couple approval

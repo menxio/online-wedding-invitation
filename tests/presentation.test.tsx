@@ -11,13 +11,11 @@ describe("invitation presentation", () => {
     expect(container.querySelectorAll(".falling-petal")).toHaveLength(6);
   });
 
-  it("renders the approved Spotify track as an embed", () => {
-    render(createElement(MusicControl, { music: weddingConfig.music }));
+  it("renders the approved local recording with a guest-controlled play button", () => {
+    const { container } = render(createElement(MusicControl, { music: weddingConfig.music }));
 
-    const player = screen.getByTitle("Born For You by Khel Pangilinan on Spotify");
-    expect(player).toHaveAttribute(
-      "src",
-      "https://open.spotify.com/embed/track/4Lc58oXRm2wo8lG28FYhIK?utm_source=generator&theme=0",
-    );
+    expect(container.querySelector("audio")).toHaveAttribute("src", "/music/born-for-you.mp3");
+    expect(screen.getByRole("button", { name: "Play Born For You by Wedding recording" })).toBeInTheDocument();
+    expect(screen.queryByTitle(/Spotify/i)).not.toBeInTheDocument();
   });
 });

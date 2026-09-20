@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { RSVP_DEADLINE_ISO, RSVP_MESSAGES, RSVP_RATE_LIMITS, RSVP_REQUEST_MAX_BYTES } from "@/lib/rsvp/constants";
-import { isRsvpOpen } from "@/lib/rsvp/deadline";
+import { RSVP_MESSAGES, RSVP_RATE_LIMITS, RSVP_REQUEST_MAX_BYTES } from "@/lib/rsvp/constants";
 import { PRIVATE_RESPONSE_HEADERS, isSameOrigin, rateLimitKey, requestAddress } from "@/lib/rsvp/request";
 import { consumeRateLimit } from "@/lib/rsvp/rate-limit";
 import { readJsonWithLimit, rsvpSubmissionSchema } from "@/lib/rsvp/schemas";
@@ -41,18 +40,11 @@ export async function POST(request: NextRequest) {
       return respond({ error: RSVP_MESSAGES.rateLimited }, 429);
     }
 
-    if (!isRsvpOpen(new Date(), RSVP_DEADLINE_ISO)) {
-      return respond({ error: RSVP_MESSAGES.deadlinePassed }, 403);
-    }
-
     const { error } = await createServiceClient().rpc("submit_rsvp", {
       p_guest_name: parsed.data.guestName,
       p_attendance: parsed.data.attendance,
     });
     if (error) {
-      if (error.message.includes("RSVP_DEADLINE_PASSED")) {
-        return respond({ error: RSVP_MESSAGES.deadlinePassed }, 403);
-      }
       throw error;
     }
 

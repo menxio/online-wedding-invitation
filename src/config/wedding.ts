@@ -2,11 +2,11 @@ import { NEEDS_COUPLE_APPROVAL } from "./content-status";
 import { weddingConfigSchema } from "./schema";
 
 const attirePalette = [
-  { name: "Bridal Rose", value: "#d69fa2", featured: true },
-  { name: "Dusty Rose", value: "#c58e96", featured: false },
-  { name: "Mauve Blush", value: "#aa737d", featured: false },
-  { name: "Petal Pink", value: "#e7bcc0", featured: false },
-  { name: "Champagne Blush", value: "#ead8c6", featured: false },
+  { name: "Rose Pink", value: "#de6e9b", featured: true },
+  { name: "Blush Rose", value: "#e38eae", featured: false },
+  { name: "Soft Pink", value: "#e7afc2", featured: false },
+  { name: "Petal Pink", value: "#efcdd8", featured: false },
+  { name: "Pearl Pink", value: "#f4e3e9", featured: false },
 ] as const;
 
 export const weddingConfig = weddingConfigSchema.parse({
@@ -20,7 +20,7 @@ export const weddingConfig = weddingConfigSchema.parse({
   motif: {
     name: "Shades of pink",
     colors: attirePalette.map(({ name, value }) => ({ name, value })),
-    paletteStatus: "needsApproval",
+    paletteStatus: "approved",
   },
   dateTime: "2026-10-17T13:30:00+08:00",
   timezone: "Asia/Manila",
@@ -49,7 +49,84 @@ export const weddingConfig = weddingConfigSchema.parse({
     },
     announcement: NEEDS_COUPLE_APPROVAL,
   },
-  story: null,
+  story: {
+    heading: "Our Love Story",
+    paragraphs: [
+      "Our love story began in the simplest and most unexpected way. When my partner started working at a company near our carinderia, our paths slowly crossed. That was where we first met, because he and his co-workers would often eat there. Little did we know that we would eventually grow fond of each other—and before we knew it, something beautiful had begun.",
+      "At that time, I was still a student at CMU. I even invited him to be my partner at our Senior’s Ball, never knowing that the person beside me that night would one day become the person I would choose to spend my whole life with.",
+      "As the months turned into years, our love grew stronger. He was there while I was doing my practice teaching, and even after graduation, he never stopped supporting me. Through every dream, challenge, and new beginning, we continued to choose each other.",
+      "In 2018, we decided to take a leap of faith and face a new chapter together abroad. Eventually, we came home to the Philippines and exchanged our vows in a civil wedding.",
+      "But deep in our hearts, we always dreamed of having our marriage blessed by God and celebrating our love with the people who matter most to us.",
+      "And now, after all these years, we are finally taking another beautiful step in our journey—not just as two people in love, but as husband and wife, blessed by God.",
+      "From a simple carinderia encounter to a lifetime of choosing each other… This is our love story. And this is only the beginning.",
+    ],
+    image: null,
+    images: [
+      {
+        src: "/wedding/story/our-story1.jpg",
+        alt: "Michael and Marris sharing a casual meal during their early years together",
+        width: 960,
+        height: 640,
+        focalPosition: "center",
+      },
+      {
+        src: "/wedding/story/our-story2.jpg",
+        alt: "Michael and Marris posing together outdoors during their early years",
+        width: 720,
+        height: 960,
+        focalPosition: "center 38%",
+      },
+      {
+        src: "/wedding/story/our-story3.jpg",
+        alt: "Michael and Marris seated together over a shared meal",
+        width: 640,
+        height: 480,
+        focalPosition: "center",
+      },
+      {
+        src: "/wedding/story/our-story4.jpg",
+        alt: "A close portrait of Michael and Marris together",
+        width: 960,
+        height: 720,
+        focalPosition: "center",
+      },
+      {
+        src: "/wedding/story/our-story5.jpg",
+        alt: "Michael and Marris sharing a playful moment during the holidays",
+        width: 960,
+        height: 720,
+        focalPosition: "center",
+      },
+      {
+        src: "/wedding/story/our-story6.jpg",
+        alt: "Michael carrying Marris beneath a canopy of trees",
+        width: 1152,
+        height: 2048,
+        focalPosition: "center 78%",
+      },
+      {
+        src: "/wedding/story/our-story7.jpg",
+        alt: "Michael and Marris overlooking a bright blue coastline",
+        width: 962,
+        height: 1280,
+        focalPosition: "center 68%",
+      },
+      {
+        src: "/wedding/story/our-story8.jpg",
+        alt: "Michael and Marris making a heart with their hands while traveling",
+        width: 540,
+        height: 960,
+        focalPosition: "center 70%",
+      },
+      {
+        src: "/wedding/story/our-story9.jpg",
+        alt: "Michael and Marris embracing in front of a colorful temple",
+        width: 960,
+        height: 540,
+        focalPosition: "center",
+      },
+    ],
+  },
   events: [
     {
       id: "ceremony",
@@ -94,14 +171,58 @@ export const weddingConfig = weddingConfigSchema.parse({
     colors: attirePalette,
     guidance: [
       {
+        audience: "Guests",
         title: "Ladies",
-        description: "Formal dresses, elegant jumpsuits, or refined separates in the wedding palette.",
+        description: "Formal dresses or long gowns in the wedding’s shades-of-pink palette.",
+        image: {
+          src: "/wedding/attire/guest-ladies.png",
+          alt: "Two illustrated formal pink dress options for female wedding guests",
+          width: 1024,
+          height: 1536,
+          focalPosition: "center",
+        },
       },
       {
+        audience: "Guests",
         title: "Gentlemen",
-        description: "Suits, barongs, or long-sleeved formal attire in soft neutral or coordinated tones.",
+        description: "Pink polo or long-sleeved collared shirts with tailored light-colored trousers.",
+        image: {
+          src: "/wedding/attire/guest-gentlemen.png",
+          alt: "Two illustrated pink shirt and light trouser options for male wedding guests",
+          width: 1024,
+          height: 1536,
+          focalPosition: "center",
+        },
+      },
+      {
+        audience: "Principal & secondary sponsors",
+        title: "Ninang",
+        description: "A long gown or formal dress in an elegant shade from the wedding palette.",
+        image: {
+          src: "/wedding/attire/sponsor-ninang.png",
+          alt: "Two illustrated formal pink gown options for Ninangs and female sponsors",
+          width: 1024,
+          height: 1536,
+          focalPosition: "center",
+        },
+      },
+      {
+        audience: "Principal & secondary sponsors",
+        title: "Ninong",
+        description: "Barong Tagalog or a formal long-sleeved Filipino shirt with black trousers.",
+        image: {
+          src: "/wedding/attire/sponsor-ninong.png",
+          alt: "Two illustrated Barong Tagalog options for Ninongs and male sponsors",
+          width: 1024,
+          height: 1536,
+          focalPosition: "center",
+        },
       },
     ],
+    reminder: {
+      title: "A thoughtful reminder",
+      message: "Please don’t wear white, and avoid casual clothes such as jeans and T-shirts. Let’s keep it classy for the occasion. Thank you for helping us maintain the tone of our special day!",
+    },
   },
   details: {
     eyebrow: "The details",
@@ -270,6 +391,10 @@ export const weddingConfig = weddingConfigSchema.parse({
     ],
   },
   faq: [
+    {
+      question: "What time should I arrive?",
+      answer: "Please arrive by 1:00 PM, at least 30 minutes before the ceremony begins at 1:30 PM.",
+    },
     {
       question: "How many seats are reserved for me?",
       answer: "This invitation and each completed RSVP are for one invited guest and one reserved seat only.",

@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { RSVP_DEADLINE_ISO, RSVP_NAME_MAX_LENGTH } from "@/lib/rsvp/constants";
-import { isRsvpOpen } from "@/lib/rsvp/deadline";
+import { RSVP_NAME_MAX_LENGTH } from "@/lib/rsvp/constants";
 import { parseJsonWithLimit, readJsonWithLimit, rsvpSubmissionSchema } from "@/lib/rsvp/schemas";
 
 const valid = { guestName: "Michael Guest", attendance: "attending", company: "", turnstileToken: "test-token" };
@@ -43,10 +42,5 @@ describe("shared-link RSVP validation", () => {
   it("stops streamed request bodies at the byte limit", async () => {
     const request = new Request("https://example.test/api/rsvp", { method: "POST", body: JSON.stringify({ value: "x".repeat(100) }) });
     await expect(readJsonWithLimit(request, 20)).rejects.toThrow("REQUEST_TOO_LARGE");
-  });
-
-  it("enforces the Manila RSVP deadline independently of page state", () => {
-    expect(isRsvpOpen(new Date("2026-10-05T23:59:59+08:00"), RSVP_DEADLINE_ISO)).toBe(true);
-    expect(isRsvpOpen(new Date("2026-10-06T00:00:00+08:00"), RSVP_DEADLINE_ISO)).toBe(false);
   });
 });

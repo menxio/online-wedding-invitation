@@ -7,12 +7,11 @@ import { RSVP_MESSAGES } from "@/lib/rsvp/constants";
 import type { Attendance } from "@/lib/rsvp/schemas";
 
 type RsvpFormProps = {
-  closed: boolean;
   confirmationCopy: string;
   turnstileSiteKey: string;
 };
 
-export function RsvpForm({ closed, confirmationCopy, turnstileSiteKey }: RsvpFormProps) {
+export function RsvpForm({ confirmationCopy, turnstileSiteKey }: RsvpFormProps) {
   const turnstileRef = useRef<TurnstileInstance | null>(null);
   const [attendance, setAttendance] = useState<Attendance | "">("");
   const [turnstileToken, setTurnstileToken] = useState("");
@@ -88,13 +87,13 @@ export function RsvpForm({ closed, confirmationCopy, turnstileSiteKey }: RsvpFor
         minLength={2}
         maxLength={160}
         autoComplete="name"
-        disabled={closed || pending}
+        disabled={pending}
         aria-describedby={error ? "rsvp-error" : undefined}
         className="mt-3 min-h-14 w-full min-w-0 border border-white/25 bg-white/8 px-4 font-serif text-lg text-white placeholder:text-white/35 focus:border-[#d7b66e] focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
         placeholder="Enter your full name"
       />
 
-      <fieldset className="mt-8" disabled={closed || pending} aria-describedby={error ? "rsvp-error" : undefined}>
+      <fieldset className="mt-8" disabled={pending} aria-describedby={error ? "rsvp-error" : undefined}>
         <legend className="font-sans text-[0.65rem] font-semibold tracking-[0.2em] text-[#d7b66e] uppercase">Will you be joining us?</legend>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {(["attending", "declining"] as const).map((value) => (
@@ -138,10 +137,9 @@ export function RsvpForm({ closed, confirmationCopy, turnstileSiteKey }: RsvpFor
 
       <div className="mt-5 min-h-6" aria-live="polite">
         {error ? <p id="rsvp-error" role="alert" className="border-l-2 border-[#e9a8b1] pl-3 font-sans text-sm leading-6 text-[#ffdce1]">{error}</p> : null}
-        {closed ? <p role="status" className="border-l-2 border-[#d7b66e] pl-3 font-sans text-sm leading-6 text-white/75">The RSVP deadline has passed. New responses are now closed.</p> : null}
       </div>
 
-      <button type="submit" disabled={closed || pending} className="mt-5 min-h-14 w-full border border-[#d7b66e] bg-[#d7b66e] px-6 font-sans text-xs font-bold tracking-[0.18em] text-[#260a13] uppercase transition hover:bg-[#ead197] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-55">
+      <button type="submit" disabled={pending} className="mt-5 min-h-14 w-full border border-[#d7b66e] bg-[#d7b66e] px-6 font-sans text-xs font-bold tracking-[0.18em] text-[#260a13] uppercase transition hover:bg-[#ead197] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-55">
         {pending ? "Submitting…" : "Submit RSVP"}
       </button>
       <p className="mt-4 text-center font-sans text-xs leading-5 text-white/50">One response reserves one seat. Responses cannot be edited after submission.</p>

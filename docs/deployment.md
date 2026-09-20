@@ -23,11 +23,11 @@ The intended target is Vercel with Supabase for persistence and administrator au
    ```
 
 6. In Supabase Authentication settings, disable public user sign-ups. Create only the coordinator account, then assign `app_metadata.role = rsvp_admin` as described in `docs/rsvp-security.md`.
-7. Run the local application and verify `/rsvp`, `/admin`, submission, Turnstile failure/retry, deadline behavior, filters, export, no-store headers, and responsive layouts against staging.
+7. Run the local application and verify `/rsvp`, `/admin`, submission, Turnstile failure/retry, late-response acceptance, filters, export, no-store headers, and responsive layouts against staging.
 8. Only after staging passes, add the same environment variables to the deployment host and deploy.
 
 Never expose `SUPABASE_SECRET_KEY` or `RSVP_RATE_LIMIT_PEPPER` in a `NEXT_PUBLIC_` variable. Never commit `.env.local` or CSV exports. Restrict access to deployment and database logs.
 
-The shared RSVP URL is operationally private, not technically authenticated. The couple should distribute it only to selected guests. Anyone who obtains the URL can submit a name, subject to validation, rate limiting, and the deadline.
+The shared RSVP URL is operationally private, not technically authenticated. The couple should distribute it only to selected guests. Anyone who obtains the URL can submit a name, subject to validation and rate limiting. October 5 is presented as the requested reply-by date but is not a technical cutoff.
 
 Docker Desktop or Podman is required for `npx supabase start` and fully local database tests. It is not required for the linked staging commands above.

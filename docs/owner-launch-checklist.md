@@ -31,13 +31,13 @@ The Gift Guide section already works without QR codes. QR cards appear only afte
 
 ## 4. Add the couple's song
 
-- [x] Spotify track selected: **Born For You — Khel Pangilinan**.
-- [x] Spotify link added to `music.spotifyUrl` in `src/config/wedding.ts`.
+- [x] Local **Born For You** wedding recording added at `public/music/born-for-you.mp3`.
+- [x] `music.src` configured in `src/config/wedding.ts`.
 - [x] Music section enabled in `src/config/sections.ts`.
-- [ ] Play the embedded track once on the final preview and confirm it is the exact recording the couple wants.
-- [ ] If the couple owns a licensed audio file and wants a site-wide play/pause control, place it in `public/wedding/music/` and set `music.src` instead.
+- [ ] Play the local recording once on the final preview and confirm it is the exact recording the couple wants.
+- [ ] Confirm that the couple has permission to publish the recording and underlying composition online.
 
-Spotify playback must remain guest-controlled. Browsers can block audible autoplay, so the site must not rely on music starting automatically.
+Playback begins from the guest's **Open Invitation** interaction and remains controllable through the fixed play/pause button. Browser policies can still block playback, so the control remains available as a fallback.
 
 ## 5. Configure production abuse protection
 
@@ -72,8 +72,8 @@ Local development uses Cloudflare's official always-pass test keys when these va
 - [ ] Verify both responses in `/admin`.
 - [ ] Verify search, filters, totals, and CSV export.
 - [ ] Verify that repeated rapid submissions receive a friendly retry message.
-- [ ] Verify that the RSVP closes after October 5, 2026 in Asia/Manila time.
-- [ ] Test every navigation link, venue link, QR code, and Spotify link.
+- [ ] Verify that the October 5 reply-by message remains visible while late RSVP submissions are still accepted.
+- [ ] Test every navigation link, venue link, QR code, and local music control.
 - [ ] Ask the couple to approve the final preview before launch.
 
 ## 8. Send and operate the invitation
@@ -82,6 +82,6 @@ Local development uses Cloudflare's official always-pass test keys when these va
 - [ ] Remind guests that each submitted RSVP reserves exactly one seat.
 - [ ] Remind guests that uninvited companions cannot be accommodated.
 - [ ] Reconcile duplicate or questionable names manually in the coordinator dashboard.
-- [ ] Export and back up the final attendance list after the deadline.
+- [ ] Export and back up the attendance list after the requested reply-by date and again before the wedding.
 
 The shared link is private by distribution, not by identity verification. The site has no authoritative guest list and does not use invitation codes or household groups.

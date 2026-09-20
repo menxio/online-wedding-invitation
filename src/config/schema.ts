@@ -33,7 +33,7 @@ export const weddingConfigSchema = z.object({
   motif: z.object({
     name: requiredText,
     colors: z.array(z.object({ name: requiredText, value: z.string().regex(/^#[0-9a-f]{6}$/i) })),
-    paletteStatus: z.literal("needsApproval"),
+    paletteStatus: z.enum(["needsApproval", "approved"]),
   }),
   dateTime: weddingDateSchema,
   timezone: requiredText,
@@ -48,6 +48,7 @@ export const weddingConfigSchema = z.object({
     heading: requiredText,
     paragraphs: z.array(requiredText).min(1),
     image: optionalImageSchema,
+    images: z.array(optionalImageSchema.unwrap()).default([]),
   }).nullable(),
   events: z.array(z.object({
     id: requiredText,
@@ -76,9 +77,15 @@ export const weddingConfigSchema = z.object({
       featured: z.boolean().default(false),
     })),
     guidance: z.array(z.object({
+      audience: requiredText,
       title: requiredText,
       description: requiredText,
+      image: optionalImageSchema.unwrap(),
     })).min(1),
+    reminder: z.object({
+      title: requiredText,
+      message: requiredText,
+    }),
   }).nullable(),
   details: z.object({
     eyebrow: requiredText,

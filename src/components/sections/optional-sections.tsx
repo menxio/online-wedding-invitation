@@ -6,16 +6,91 @@ import { SectionHeading } from "@/components/ui/section-heading";
 
 export function StorySection({ wedding }: { wedding: WeddingConfig }) {
   if (!wedding.story) return null;
+
+  const closingParagraph = wedding.story.paragraphs.at(-1);
+  const narrativeParagraphs = wedding.story.paragraphs.slice(0, -1);
+  const openingParagraphs = narrativeParagraphs.slice(0, 3);
+  const remainingParagraphs = narrativeParagraphs.slice(3);
+  const storyImages = wedding.story.images.length > 0
+    ? wedding.story.images
+    : wedding.story.image
+      ? [wedding.story.image]
+      : [];
+
   return (
-    <section id="story" aria-labelledby="story-title" className="bg-background py-[var(--wedding-spacing-section)]">
-      <Container className="grid items-center gap-12 lg:grid-cols-2">
-        <div>
-          <SectionHeading id="story-title" eyebrow="How it began" title={wedding.story.heading} />
-          <div className="mt-8 space-y-5 font-serif text-xl leading-9 text-muted">
-            {wedding.story.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+    <section
+      id="story"
+      aria-labelledby="story-title"
+      className="relative isolate overflow-hidden bg-[#fbf4ec] py-[var(--wedding-spacing-section)]"
+    >
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-[radial-gradient(circle_at_top,rgba(214,159,162,0.24),transparent_68%)]"
+      />
+      <div aria-hidden="true" className="absolute top-24 -left-28 -z-10 size-72 rounded-full border border-[#d69fa2]/20" />
+      <div aria-hidden="true" className="absolute -right-36 bottom-20 -z-10 size-96 rounded-full border border-[#b78a3b]/15" />
+      <FallingPetals density="sparse" className="opacity-20" />
+
+      <Container className="relative z-30 max-w-6xl">
+        <article className="mx-auto max-w-5xl">
+          <div className="text-center">
+            <SectionHeading id="story-title" eyebrow="How it began" title={wedding.story.heading} align="center" />
+            <div aria-hidden="true" className="mx-auto mt-8 flex items-center justify-center gap-3 text-accent">
+              <span className="h-px w-14 bg-current/45" />
+              <span className="size-2 rotate-45 border border-current" />
+              <span className="h-px w-14 bg-current/45" />
+            </div>
           </div>
-        </div>
-        {wedding.story.image ? <Image src={wedding.story.image.src} alt={wedding.story.image.alt} width={wedding.story.image.width} height={wedding.story.image.height} sizes="(max-width: 1023px) 100vw, 50vw" className="h-auto w-full" /> : null}
+
+          <div className="mt-12 border-y border-border bg-white/45 px-6 py-10 shadow-[0_24px_70px_rgba(73,34,42,0.06)] sm:px-10 sm:py-12 lg:px-14">
+            <div className="space-y-6 font-serif text-lg leading-8 text-muted sm:text-xl sm:leading-9">
+              {openingParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            </div>
+
+            {storyImages.length > 0 ? (
+              <figure className="my-12 sm:my-14">
+                <figcaption className="mb-6 flex items-center gap-4 font-sans text-[0.65rem] font-semibold tracking-[0.28em] text-accent uppercase">
+                  <span className="h-px flex-1 bg-border" />
+                  Through the years
+                  <span className="h-px flex-1 bg-border" />
+                </figcaption>
+                <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4">
+                  {storyImages.map((image, index) => (
+                    <li
+                      key={image.src}
+                      className={`group relative aspect-[4/3] overflow-hidden border-[5px] border-white bg-[#ead8c6] shadow-[0_10px_28px_rgba(73,34,42,0.12)] ${
+                        storyImages.length % 2 === 1 && index === storyImages.length - 1
+                          ? "max-sm:col-span-2 max-sm:mx-auto max-sm:w-1/2"
+                          : ""
+                      }`}
+                    >
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        sizes="(max-width: 639px) 42vw, 27vw"
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+                        style={{ objectPosition: image.focalPosition }}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </figure>
+            ) : null}
+
+            {remainingParagraphs.length > 0 ? (
+              <div className="space-y-6 font-serif text-lg leading-8 text-muted sm:text-xl sm:leading-9">
+                {remainingParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+              </div>
+            ) : null}
+
+            {closingParagraph ? (
+              <p className="mt-10 border-l-2 border-accent pl-6 font-serif text-2xl leading-9 text-primary italic sm:text-3xl sm:leading-10">
+                {closingParagraph}
+              </p>
+            ) : null}
+          </div>
+        </article>
       </Container>
     </section>
   );
@@ -32,7 +107,7 @@ export function DressCodeSection({ wedding }: { wedding: WeddingConfig }) {
     >
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(circle_at_top,rgba(214,159,162,0.22),transparent_68%)]"
+        className="absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(circle_at_top,rgba(222,110,155,0.20),transparent_68%)]"
       />
       <div aria-hidden="true" className="absolute top-16 -left-24 -z-10 size-64 rounded-full border border-[#d69fa2]/20" />
       <div aria-hidden="true" className="absolute -right-32 bottom-10 -z-10 size-80 rounded-full border border-[#b78a3b]/15" />
@@ -81,14 +156,47 @@ export function DressCodeSection({ wedding }: { wedding: WeddingConfig }) {
           ))}
         </ul>
 
-        <div className="mx-auto mt-20 grid max-w-5xl border-y border-border md:grid-cols-2">
-          {wedding.dressCode.guidance.map((item, index) => (
-            <div key={item.title} className={`px-6 py-10 text-center sm:px-12 ${index > 0 ? "border-t border-border md:border-t-0 md:border-l" : ""}`}>
-              <h3 className="font-serif text-3xl text-primary">{item.title}</h3>
-              <p className="mx-auto mt-4 max-w-md font-serif text-lg leading-8 text-muted">{item.description}</p>
-            </div>
+        <aside className="mx-auto mt-16 max-w-4xl border-y border-[#de6e9b]/35 bg-white/50 px-6 py-9 text-center shadow-[0_18px_45px_rgba(222,110,155,0.08)] sm:px-12 sm:py-11">
+          <div aria-hidden="true" className="mx-auto flex items-center justify-center gap-3 text-accent">
+            <span className="h-px w-14 bg-current/45" />
+            <span className="text-base leading-none">&hearts;</span>
+            <span className="h-px w-14 bg-current/45" />
+          </div>
+          <p className="mt-5 font-sans text-[0.65rem] font-semibold tracking-[0.3em] text-[#c84f7c] uppercase">
+            {wedding.dressCode.reminder.title}
+          </p>
+          <p className="mx-auto mt-5 max-w-2xl font-serif text-xl leading-8 text-primary italic sm:text-2xl sm:leading-9">
+            {wedding.dressCode.reminder.message}
+          </p>
+        </aside>
+
+        <ul className="mx-auto mt-20 grid max-w-6xl gap-5 sm:grid-cols-2 lg:gap-7">
+          {wedding.dressCode.guidance.map((item) => (
+            <li
+              key={`${item.audience}-${item.title}`}
+              className="group overflow-hidden border border-border bg-white/55 shadow-[0_20px_55px_rgba(73,34,42,0.08)]"
+            >
+              <div className="relative isolate flex h-80 items-end justify-center overflow-hidden bg-[radial-gradient(circle_at_50%_42%,rgba(222,110,155,0.18),transparent_58%),linear-gradient(180deg,#fffaf4_0%,#f6e8ee_100%)] px-5 pt-7 sm:h-[25rem]">
+                <div aria-hidden="true" className="absolute inset-4 -z-10 border border-[#b78a3b]/15" />
+                <Image
+                  src={item.image.src}
+                  alt={item.image.alt}
+                  width={item.image.width}
+                  height={item.image.height}
+                  sizes="(max-width: 639px) 86vw, (max-width: 1023px) 44vw, 34rem"
+                  className="h-full w-full object-contain object-bottom transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                />
+              </div>
+              <div className="border-t border-border px-7 py-7 text-center sm:px-10 sm:py-9">
+                <p className="font-sans text-[0.62rem] font-semibold tracking-[0.24em] text-accent uppercase">
+                  {item.audience}
+                </p>
+                <h3 className="mt-3 font-serif text-3xl text-primary sm:text-4xl">{item.title}</h3>
+                <p className="mx-auto mt-4 max-w-md font-serif text-lg leading-8 text-muted">{item.description}</p>
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
 
         <p className="mt-9 text-center font-sans text-[0.62rem] font-semibold tracking-[0.28em] text-primary uppercase">
           Formal attire <span aria-hidden="true" className="px-2 text-accent">•</span> {wedding.motif.name}

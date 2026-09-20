@@ -7,7 +7,7 @@ export const sectionsConfig = sectionsConfigSchema.parse({
     "closing", "music",
   ],
   enabled: {
-    opening: true, hero: true, countdown: true, invitation: false, story: false,
+    opening: true, hero: true, countdown: true, invitation: false, story: true,
     events: true, venue: true, details: true, dressCode: true, entourage: true,
     gallery: true, giftGuide: true, rsvp: true, faq: true, closing: false,
     music: true,

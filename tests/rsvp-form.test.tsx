@@ -15,7 +15,6 @@ vi.mock("@marsidev/react-turnstile", async () => {
 });
 
 const formProps = {
-  closed: false,
   confirmationCopy: "Your response has been received.",
   turnstileSiteKey: "1x00000000000000000000AA",
 };
@@ -110,13 +109,5 @@ describe("guest RSVP form states", () => {
     fireEvent.click(screen.getByRole("button", { name: "Submit RSVP" }));
 
     await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent(RSVP_MESSAGES.unavailable));
-  });
-
-  it("disables the form and announces the deadline-closed state", () => {
-    render(<RsvpForm {...formProps} closed />);
-
-    expect(screen.getByRole("status")).toHaveTextContent("RSVP deadline has passed");
-    expect(screen.getByLabelText("Full name")).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Submit RSVP" })).toBeDisabled();
   });
 });

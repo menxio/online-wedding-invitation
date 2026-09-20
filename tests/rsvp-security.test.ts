@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const migrationPath = "supabase/migrations/202609120001_shared_link_rsvp.sql";
+const advisoryDateMigrationPath = "supabase/migrations/202609200001_allow_late_rsvp.sql";
 
 describe("RSVP privacy and infrastructure guardrails", () => {
   it("keeps the elevated Supabase credential out of every Client Component", () => {
@@ -24,12 +25,14 @@ describe("RSVP privacy and infrastructure guardrails", () => {
     expect(migration).toContain("using ((select public.is_rsvp_admin()))");
   });
 
-  it("restricts mutations to the service role and enforces a database-clock deadline", () => {
+  it("restricts mutations to the service role and keeps the reply-by date advisory", () => {
     const migration = readFileSync(resolve(migrationPath), "utf8");
+    const advisoryDateMigration = readFileSync(resolve(advisoryDateMigrationPath), "utf8");
     expect(migration).toContain("grant execute on function public.submit_rsvp");
     expect(migration).toContain("to service_role");
-    expect(migration).toContain("perform public.assert_rsvp_open(clock_timestamp())");
-    expect(migration).toContain("2026-10-05 23:59:59.999999+08");
+    expect(advisoryDateMigration).toContain("drop function if exists public.assert_rsvp_open");
+    expect(advisoryDateMigration).not.toContain("perform public.assert_rsvp_open");
+    expect(advisoryDateMigration).toContain("The displayed reply-by date is advisory");
   });
 
   it("stores rate-limit keys as digests and configures shared-network-safe layered limits", () => {

@@ -50,7 +50,13 @@ describe("template configuration", () => {
     expect(weddingConfig.entourage.find((group) => group.role === "Principal Sponsors — Ninong")?.names).toHaveLength(21);
     expect(weddingConfig.entourage.find((group) => group.role === "Principal Sponsors — Ninang")?.names).toHaveLength(21);
     expect(sectionsConfig.enabled.entourage).toBe(true);
-    expect(sectionsConfig.enabled.story).toBe(false);
+    expect(sectionsConfig.enabled.story).toBe(true);
+    expect(weddingConfig.story).toMatchObject({
+      heading: "Our Love Story",
+      image: null,
+    });
+    expect(weddingConfig.story?.paragraphs).toHaveLength(7);
+    expect(weddingConfig.story?.images).toHaveLength(9);
   });
 
   it("captures the implemented shared-link one-seat RSVP rules", () => {
@@ -71,12 +77,25 @@ describe("template configuration", () => {
     expect(weddingConfig.dressCode?.title).toBe("What to wear");
     expect(weddingConfig.dressCode?.colors).toHaveLength(5);
     expect(weddingConfig.dressCode?.colors[0]).toMatchObject({
-      name: "Bridal Rose",
-      value: "#d69fa2",
+      name: "Rose Pink",
+      value: "#de6e9b",
       featured: true,
     });
+    expect(weddingConfig.motif.paletteStatus).toBe("approved");
+    expect(weddingConfig.dressCode?.reminder.message).toContain("don’t wear white");
+    expect(weddingConfig.dressCode?.guidance).toHaveLength(4);
+    expect(weddingConfig.dressCode?.guidance.map((item) => item.image.src)).toEqual([
+      "/wedding/attire/guest-ladies.png",
+      "/wedding/attire/guest-gentlemen.png",
+      "/wedding/attire/sponsor-ninang.png",
+      "/wedding/attire/sponsor-ninong.png",
+    ]);
     expect(weddingConfig.details.items).toHaveLength(5);
     expect(weddingConfig.faq.length).toBeGreaterThanOrEqual(6);
+    expect(weddingConfig.faq[0]).toMatchObject({
+      question: "What time should I arrive?",
+      answer: expect.stringContaining("1:00 PM"),
+    });
     expect(weddingConfig.giftGuide.accounts).toEqual([
       expect.objectContaining({
         label: "BPI · Michael",

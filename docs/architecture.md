@@ -25,7 +25,7 @@ Configuration is parsed by Zod as the application loads. Static wedding content 
 
 ## RSVP boundaries
 
-`/rsvp` is the only public RSVP destination. It submits `{ guestName, attendance, company }` to a protected server route. The browser never inserts into Supabase directly. The route validates a bounded request, rejects unknown fields and the honeypot, checks same-origin signals, consumes database-backed rate limits, checks the deadline, and calls a restricted atomic PostgreSQL function.
+`/rsvp` is the only public RSVP destination. It submits `{ guestName, attendance, company, turnstileToken }` to a protected server route. The browser never inserts into Supabase directly. The route validates a bounded request, rejects unknown fields and the honeypot, verifies Turnstile, checks same-origin signals, consumes database-backed rate limits, and calls a restricted atomic PostgreSQL function. The displayed October 5 reply-by date is advisory; late responses remain accepted.
 
 Each response row represents exactly one seat. Names are not unique and are not treated as identity. There are no guest accounts, codes, tokens, imported invitees, additional-attendee fields, or edit flow.
 
