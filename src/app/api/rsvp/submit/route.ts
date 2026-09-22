@@ -42,6 +42,7 @@ export async function POST(request: NextRequest) {
 
     const { error } = await createServiceClient().rpc("submit_rsvp", {
       p_guest_name: parsed.data.guestName,
+      p_guest_role: parsed.data.guestRole,
       p_attendance: parsed.data.attendance,
     });
     if (error) {

@@ -2,7 +2,7 @@
 
 ## Product model
 
-The couple manually sends the same `/rsvp` URL to selected guests. A guest enters a full name and chooses either “Joyfully accepts” or “Regretfully declines.” Every accepted submission creates one response representing exactly one reserved seat. There are no added attendees, response edits, guest accounts, codes, or unique links.
+The couple manually sends the same `/rsvp` URL to selected guests. A guest enters a full name, selects their wedding role, and chooses either “Joyfully accepts” or “Regretfully declines.” Every accepted submission creates one response representing exactly one reserved seat. There are no added attendees, response edits, guest accounts, codes, or unique links.
 
 The wedding is adults-only except for children in the wedding entourage. Because the application has no authoritative guest list, that policy is controlled through link distribution rather than falsely enforced through website identity checks.
 
@@ -49,7 +49,7 @@ Do not use editable `user_metadata` for authorization. Sign out and back in afte
 ## Operations
 
 - Guests use `/rsvp` and cannot query submitted responses.
-- Coordinators sign in at `/admin`, review response totals, search/filter names, and export Guest Name / Attendance / Submitted At.
+- Coordinators sign in at `/admin`, review response totals, search/filter names, attendance, and roles, and export Guest Name / Role / Attendance / Submitted At.
 - CSV cells beginning with spreadsheet formula characters are neutralized. Treat exports as private event data.
 - Periodically remove old `rsvp_rate_limits` windows if desired. Do not expose their digests to administrators.
 - If a response appears duplicated or questionable, reconcile it outside the guest-facing application. Do not infer identity from a name or request-address digest.

@@ -2,11 +2,15 @@ import { describe, expect, it } from "vitest";
 import { RSVP_NAME_MAX_LENGTH } from "@/lib/rsvp/constants";
 import { parseJsonWithLimit, readJsonWithLimit, rsvpSubmissionSchema } from "@/lib/rsvp/schemas";
 
-const valid = { guestName: "Michael Guest", attendance: "attending", company: "", turnstileToken: "test-token" };
+const valid = { guestName: "Michael Guest", guestRole: "guest", attendance: "attending", company: "", turnstileToken: "test-token" };
 
 describe("shared-link RSVP validation", () => {
   it.each(["attending", "declining"])("accepts a valid %s response", (attendance) => {
     expect(rsvpSubmissionSchema.parse({ ...valid, attendance })).toEqual({ ...valid, attendance });
+  });
+
+  it.each(["guest", "principal_sponsor", "secondary_sponsor", "entourage"])("accepts the supported %s role", (guestRole) => {
+    expect(rsvpSubmissionSchema.safeParse({ ...valid, guestRole }).success).toBe(true);
   });
 
   it("trims and collapses whitespace in a guest name", () => {
@@ -20,6 +24,13 @@ describe("shared-link RSVP validation", () => {
   it("rejects excessively long names and invalid attendance", () => {
     expect(rsvpSubmissionSchema.safeParse({ ...valid, guestName: "x".repeat(RSVP_NAME_MAX_LENGTH + 1) }).success).toBe(false);
     expect(rsvpSubmissionSchema.safeParse({ ...valid, attendance: "maybe" }).success).toBe(false);
+  });
+
+  it("rejects missing and unsupported wedding roles", () => {
+    const withoutRole: Record<string, unknown> = { ...valid };
+    delete withoutRole.guestRole;
+    expect(rsvpSubmissionSchema.safeParse(withoutRole).success).toBe(false);
+    expect(rsvpSubmissionSchema.safeParse({ ...valid, guestRole: "bridesmaid" }).success).toBe(false);
   });
 
   it.each([

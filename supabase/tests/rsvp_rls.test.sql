@@ -1,5 +1,5 @@
 begin;
-select plan(17);
+select plan(19);
 
 select tests.rls_enabled('public', 'rsvp_responses');
 select tests.rls_enabled('public', 'rsvp_rate_limits');
@@ -24,6 +24,10 @@ select throws_ok(
 select throws_ok(
   $$select public.submit_rsvp('Public Guest', 'attending')$$,
   '42501', null, 'anon cannot invoke the RSVP mutation'
+);
+select throws_ok(
+  $$select public.submit_rsvp('Public Entourage', 'attending', 'entourage')$$,
+  '42501', null, 'anon cannot invoke the role-aware RSVP mutation'
 );
 
 set local role authenticated;
@@ -69,6 +73,14 @@ select is(
   (select count(*) from public.rsvp_responses where guest_name = 'Codex Duplicate Name Test'),
   2::bigint,
   'duplicate names are allowed because names are not identities'
+);
+
+insert into public.rsvp_responses (guest_name, attendance, guest_role)
+values ('Codex Entourage Role Test', 'attending', 'entourage');
+select is(
+  (select guest_role::text from public.rsvp_responses where guest_name = 'Codex Entourage Role Test'),
+  'entourage',
+  'RSVP responses retain the selected wedding role'
 );
 
 select * from finish();

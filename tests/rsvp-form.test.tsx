@@ -21,6 +21,7 @@ const formProps = {
 
 function completeForm() {
   fireEvent.change(screen.getByLabelText("Full name"), { target: { value: "Codex RSVP Test" } });
+  fireEvent.click(screen.getByLabelText("Guest"));
   fireEvent.click(screen.getByLabelText("Joyfully accepts"));
   fireEvent.click(screen.getByRole("button", { name: "Complete security check" }));
 }
@@ -50,6 +51,7 @@ describe("guest RSVP form states", () => {
     vi.stubGlobal("fetch", request);
     render(<RsvpForm {...formProps} />);
     fireEvent.change(screen.getByLabelText("Full name"), { target: { value: "Codex RSVP Test" } });
+    fireEvent.click(screen.getByLabelText("Guest"));
     fireEvent.click(screen.getByLabelText("Joyfully accepts"));
 
     fireEvent.click(screen.getByRole("button", { name: "Submit RSVP" }));
@@ -82,7 +84,7 @@ describe("guest RSVP form states", () => {
 
     expect(await screen.findByRole("heading", { name: "Thank you" })).toBeInTheDocument();
     const payload = JSON.parse(String(request.mock.calls[0][1]?.body));
-    expect(payload).toEqual({ guestName: "Codex RSVP Test", attendance: "attending", company: "", turnstileToken: "XXXX.DUMMY.TOKEN.XXXX" });
+    expect(payload).toEqual({ guestName: "Codex RSVP Test", guestRole: "guest", attendance: "attending", company: "", turnstileToken: "XXXX.DUMMY.TOKEN.XXXX" });
   });
 
   it.each([

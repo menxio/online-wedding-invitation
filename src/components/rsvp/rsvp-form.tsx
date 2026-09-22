@@ -4,7 +4,12 @@ import { useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import { RSVP_MESSAGES } from "@/lib/rsvp/constants";
-import type { Attendance } from "@/lib/rsvp/schemas";
+import {
+  RSVP_ROLE_LABELS,
+  rsvpRoleValues,
+  type Attendance,
+  type RsvpRole,
+} from "@/lib/rsvp/schemas";
 
 type RsvpFormProps = {
   confirmationCopy: string;
@@ -14,6 +19,7 @@ type RsvpFormProps = {
 export function RsvpForm({ confirmationCopy, turnstileSiteKey }: RsvpFormProps) {
   const turnstileRef = useRef<TurnstileInstance | null>(null);
   const [attendance, setAttendance] = useState<Attendance | "">("");
+  const [guestRole, setGuestRole] = useState<RsvpRole | "">("");
   const [turnstileToken, setTurnstileToken] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
@@ -25,7 +31,7 @@ export function RsvpForm({ confirmationCopy, turnstileSiteKey }: RsvpFormProps) 
 
     const form = new FormData(event.currentTarget);
     const guestName = String(form.get("guestName") ?? "").trim();
-    if (guestName.length < 2 || !attendance) {
+    if (guestName.length < 2 || !guestRole || !attendance) {
       setError(RSVP_MESSAGES.invalidResponse);
       return;
     }
@@ -40,7 +46,7 @@ export function RsvpForm({ confirmationCopy, turnstileSiteKey }: RsvpFormProps) 
       const response = await fetch("/api/rsvp/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ guestName, attendance, company: form.get("company"), turnstileToken }),
+        body: JSON.stringify({ guestName, guestRole, attendance, company: form.get("company"), turnstileToken }),
       });
       const result = await response.json().catch(() => null) as { error?: string } | null;
       if (!response.ok) {
@@ -92,6 +98,19 @@ export function RsvpForm({ confirmationCopy, turnstileSiteKey }: RsvpFormProps) 
         className="mt-3 min-h-14 w-full min-w-0 border border-white/25 bg-white/8 px-4 font-serif text-lg text-white placeholder:text-white/35 focus:border-[#d7b66e] focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
         placeholder="Enter your full name"
       />
+
+      <fieldset className="mt-8" disabled={pending} aria-describedby={error ? "rsvp-error" : undefined}>
+        <legend className="font-sans text-[0.65rem] font-semibold tracking-[0.2em] text-[#d7b66e] uppercase">Your role</legend>
+        <p className="mt-2 font-sans text-xs leading-5 text-white/55">If you were not assigned a wedding role, choose Guest.</p>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          {rsvpRoleValues.map((value) => (
+            <label key={value} className="flex min-h-16 cursor-pointer items-center gap-3 border border-white/20 bg-white/[0.045] px-4 transition has-[:checked]:border-[#d7b66e] has-[:checked]:bg-[#d7b66e]/12 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[#d7b66e]">
+              <input type="radio" name="guestRole" value={value} checked={guestRole === value} onChange={() => setGuestRole(value)} className="size-5 shrink-0 accent-[#d7b66e]" />
+              <span className="font-serif text-base leading-5">{RSVP_ROLE_LABELS[value]}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
 
       <fieldset className="mt-8" disabled={pending} aria-describedby={error ? "rsvp-error" : undefined}>
         <legend className="font-sans text-[0.65rem] font-semibold tracking-[0.2em] text-[#d7b66e] uppercase">Will you be joining us?</legend>

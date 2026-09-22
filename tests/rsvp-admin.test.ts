@@ -5,8 +5,8 @@ import { isRsvpAdmin } from "@/lib/rsvp/admin-role";
 import type { RsvpResponse } from "@/lib/rsvp/types";
 
 const responses: RsvpResponse[] = [
-  { id: "one", guestName: "=Unsafe Formula", attendance: "attending", submittedAt: "2026-09-12T04:00:00Z" },
-  { id: "two", guestName: "Maria Santos", attendance: "declining", submittedAt: "2026-09-13T04:00:00Z" },
+  { id: "one", guestName: "=Unsafe Formula", guestRole: "principal_sponsor", attendance: "attending", submittedAt: "2026-09-12T04:00:00Z" },
+  { id: "two", guestName: "Maria Santos", guestRole: "guest", attendance: "declining", submittedAt: "2026-09-13T04:00:00Z" },
 ];
 
 describe("RSVP administration", () => {
@@ -20,11 +20,14 @@ describe("RSVP administration", () => {
     expect(filterResponses(responses, "maria", "all")).toEqual([responses[1]]);
     expect(filterResponses(responses, "", "attending")).toEqual([responses[0]]);
     expect(filterResponses(responses, "maria", "attending")).toEqual([]);
+    expect(filterResponses(responses, "", "all", "principal_sponsor")).toEqual([responses[0]]);
+    expect(filterResponses(responses, "maria", "all", "entourage")).toEqual([]);
   });
 
   it("exports only practical columns and neutralizes spreadsheet formulas", () => {
     const csv = toAdminCsv(responses);
-    expect(csv.split("\r\n")[0]).toBe('"Guest Name","Attendance","Submitted At"');
+    expect(csv.split("\r\n")[0]).toBe('"Guest Name","Role","Attendance","Submitted At"');
+    expect(csv).toContain("Principal Sponsor (Ninong/Ninang)");
     expect(csv).toContain("'=Unsafe Formula");
     expect(csv).not.toContain("one");
     expect(csv).not.toMatch(/fingerprint|digest|credential|internal/i);

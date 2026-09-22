@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const migrationPath = "supabase/migrations/202609120001_shared_link_rsvp.sql";
 const advisoryDateMigrationPath = "supabase/migrations/202609200001_allow_late_rsvp.sql";
+const guestRoleMigrationPath = "supabase/migrations/202609220001_add_rsvp_guest_role.sql";
 
 describe("RSVP privacy and infrastructure guardrails", () => {
   it("keeps the elevated Supabase credential out of every Client Component", () => {
@@ -33,6 +34,14 @@ describe("RSVP privacy and infrastructure guardrails", () => {
     expect(advisoryDateMigration).toContain("drop function if exists public.assert_rsvp_open");
     expect(advisoryDateMigration).not.toContain("perform public.assert_rsvp_open");
     expect(advisoryDateMigration).toContain("The displayed reply-by date is advisory");
+  });
+
+  it("stores the selected wedding role through a service-only mutation", () => {
+    const roleMigration = readFileSync(resolve(guestRoleMigrationPath), "utf8");
+    expect(roleMigration).toContain("guest_role public.rsvp_role not null default 'guest'");
+    expect(roleMigration).toContain("p_guest_role public.rsvp_role");
+    expect(roleMigration).toContain("to service_role");
+    expect(roleMigration).toContain("from public, anon, authenticated");
   });
 
   it("stores rate-limit keys as digests and configures shared-network-safe layered limits", () => {
