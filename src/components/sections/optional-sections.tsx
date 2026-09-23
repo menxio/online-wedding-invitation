@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { WeddingConfig } from "@/config";
 import { FallingPetals } from "@/components/effects/falling-petals";
 import { Container } from "@/components/layout/container";
+import { EntourageCarousel } from "@/components/sections/entourage-carousel";
 import { SectionHeading } from "@/components/ui/section-heading";
 
 export function StorySection({ wedding }: { wedding: WeddingConfig }) {
@@ -21,25 +22,20 @@ export function StorySection({ wedding }: { wedding: WeddingConfig }) {
     <section
       id="story"
       aria-labelledby="story-title"
-      className="relative isolate overflow-hidden bg-[#fbf4ec] py-[var(--wedding-spacing-section)]"
+      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#fffaf4_0%,#f4e3e9_100%)] py-[var(--wedding-spacing-section)]"
     >
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-[radial-gradient(circle_at_top,rgba(214,159,162,0.24),transparent_68%)]"
+        className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-[radial-gradient(circle_at_top,rgba(222,110,155,0.22),transparent_68%)]"
       />
-      <div aria-hidden="true" className="absolute top-24 -left-28 -z-10 size-72 rounded-full border border-[#d69fa2]/20" />
-      <div aria-hidden="true" className="absolute -right-36 bottom-20 -z-10 size-96 rounded-full border border-[#b78a3b]/15" />
+      <div aria-hidden="true" className="absolute top-24 -left-28 -z-10 size-72 rounded-full border border-[#de6e9b]/20" />
+      <div aria-hidden="true" className="absolute -right-36 bottom-20 -z-10 size-96 rounded-full border border-[#e7afc2]/25" />
       <FallingPetals density="sparse" className="opacity-20" />
 
       <Container className="relative z-30 max-w-6xl">
         <article className="mx-auto max-w-5xl">
           <div className="text-center">
-            <SectionHeading id="story-title" eyebrow="How it began" title={wedding.story.heading} align="center" />
-            <div aria-hidden="true" className="mx-auto mt-8 flex items-center justify-center gap-3 text-accent">
-              <span className="h-px w-14 bg-current/45" />
-              <span className="size-2 rotate-45 border border-current" />
-              <span className="h-px w-14 bg-current/45" />
-            </div>
+            <SectionHeading id="story-title" eyebrow="How it began" title={wedding.story.heading} align="center" titleStyle="script" />
           </div>
 
           <div className="mt-12 border-y border-border bg-white/45 px-6 py-10 shadow-[0_24px_70px_rgba(73,34,42,0.06)] sm:px-10 sm:py-12 lg:px-14">
@@ -58,7 +54,7 @@ export function StorySection({ wedding }: { wedding: WeddingConfig }) {
                   {storyImages.map((image, index) => (
                     <li
                       key={image.src}
-                      className={`group relative aspect-[4/3] overflow-hidden border-[5px] border-white bg-[#ead8c6] shadow-[0_10px_28px_rgba(73,34,42,0.12)] ${
+                      className={`group relative aspect-[4/3] overflow-hidden border-[5px] border-white bg-[#f4e3e9] shadow-[0_10px_28px_rgba(73,34,42,0.12)] ${
                         storyImages.length % 2 === 1 && index === storyImages.length - 1
                           ? "max-sm:col-span-2 max-sm:mx-auto max-sm:w-1/2"
                           : ""
@@ -114,23 +110,23 @@ export function DressCodeSection({ wedding }: { wedding: WeddingConfig }) {
 
       <Container className="max-w-7xl">
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-          <p className="font-sans text-[0.68rem] font-semibold tracking-[0.36em] text-primary uppercase">
+          <p className="font-sans text-[0.68rem] font-semibold tracking-[0.36em] text-[#b54870] uppercase">
             Wedding attire
           </p>
           <h2
             id="dress-code-title"
-            className="mt-5 font-serif text-[clamp(4rem,10vw,8.5rem)] leading-[0.82] font-medium tracking-[-0.055em] text-[#2b1117] uppercase"
+            className="mt-4 font-script text-[clamp(4.25rem,10vw,7.5rem)] leading-[1.02] font-normal text-accent"
           >
             {wedding.dressCode.title}
           </h2>
-          <p className="mt-8 max-w-2xl font-serif text-lg leading-8 text-muted sm:text-xl">
+          <div aria-hidden="true" className="mt-5 flex items-center gap-3 text-accent">
+            <span className="h-px w-16 bg-current/55" />
+            <span className="text-sm leading-none">&hearts;</span>
+            <span className="h-px w-16 bg-current/55" />
+          </div>
+          <p className="mt-7 max-w-2xl font-serif text-lg leading-8 text-[#a84a6c] italic sm:text-xl">
             {wedding.dressCode.description}
           </p>
-          <div aria-hidden="true" className="mt-10 flex items-center gap-3 text-accent">
-            <span className="h-px w-16 bg-current/45" />
-            <span className="size-2 rotate-45 border border-current" />
-            <span className="h-px w-16 bg-current/45" />
-          </div>
         </div>
 
         <ul className="mx-auto mt-14 flex max-w-6xl flex-wrap justify-center gap-x-7 gap-y-12 sm:gap-x-10 lg:gap-x-12">
@@ -213,34 +209,20 @@ export function EntourageSection({ wedding }: { wedding: WeddingConfig }) {
     <section
       id="entourage"
       aria-labelledby="entourage-title"
-      className="relative isolate overflow-hidden bg-[radial-gradient(circle_at_12%_8%,rgba(170,115,125,0.20),transparent_30%),radial-gradient(circle_at_88%_92%,rgba(183,138,59,0.10),transparent_32%),linear-gradient(145deg,#151215_0%,#2b0c17_48%,#171316_100%)] py-[var(--wedding-spacing-section)] text-white"
+      className="relative isolate overflow-hidden bg-[radial-gradient(circle_at_12%_8%,rgba(222,110,155,0.18),transparent_32%),radial-gradient(circle_at_88%_92%,rgba(231,175,194,0.22),transparent_36%),linear-gradient(145deg,#fffaf4_0%,#f4e3e9_52%,#fffaf4_100%)] py-[var(--wedding-spacing-section)] text-primary"
     >
-      <div aria-hidden="true" className="absolute inset-5 -z-10 border border-[#d7b66e]/15 sm:inset-8" />
-      <FallingPetals density="sparse" className="opacity-45" />
+      <div aria-hidden="true" className="absolute inset-5 -z-10 border border-[#de6e9b]/20 sm:inset-8" />
+      <FallingPetals density="sparse" className="opacity-25" />
 
       <Container className="relative z-30">
-        <div className="max-w-5xl">
-          <SectionHeading id="entourage-title" eyebrow="Family & friends" title="Wedding entourage" inverse />
-          <p className="mt-8 max-w-2xl font-serif text-xl leading-8 text-white/60">
+        <div className="mx-auto max-w-5xl text-center">
+          <SectionHeading id="entourage-title" eyebrow="The entourage" title="With Our Beloved" align="center" titleStyle="script" />
+          <p className="mx-auto mt-7 max-w-2xl font-serif text-xl leading-8 text-[#a84a6c] italic">
             With love and gratitude, we celebrate alongside the family and friends who have guided and supported us.
           </p>
         </div>
 
-        <div className="mt-16 grid gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-2">
-          {wedding.entourage.map((group) => {
-            const isLargeGroup = group.names.length > 8;
-
-            return (
-              <div key={group.role} className={`bg-[#171316]/82 p-7 backdrop-blur-[2px] sm:p-10 ${isLargeGroup ? "sm:col-span-2" : ""}`}>
-                <div aria-hidden="true" className="mb-6 h-px w-10 bg-[#d7b66e]/70" />
-                <h3 className="font-sans text-[0.68rem] font-semibold tracking-[0.22em] text-[#d7b66e] uppercase">{group.role}</h3>
-                <ul className={`mt-6 grid gap-x-10 gap-y-2.5 font-serif text-xl leading-8 text-white/78 sm:text-2xl ${isLargeGroup ? "md:grid-cols-2 xl:grid-cols-3" : ""}`}>
-                  {group.names.map((name) => <li key={name}>{name}</li>)}
-                </ul>
-              </div>
-            );
-          })}
-        </div>
+        <EntourageCarousel groups={wedding.entourage} />
       </Container>
     </section>
   );
@@ -249,9 +231,9 @@ export function EntourageSection({ wedding }: { wedding: WeddingConfig }) {
 export function FaqSection({ wedding }: { wedding: WeddingConfig }) {
   if (wedding.faq.length === 0) return null;
   return (
-    <section id="faq" aria-labelledby="faq-title" className="bg-background py-[var(--wedding-spacing-section)]">
+    <section id="faq" aria-labelledby="faq-title" className="bg-[linear-gradient(180deg,#fffaf4_0%,#f4e3e9_100%)] py-[var(--wedding-spacing-section)]">
       <Container className="max-w-4xl">
-        <SectionHeading id="faq-title" eyebrow="Good to know" title="Frequently asked" align="center" />
+        <SectionHeading id="faq-title" eyebrow="Good to know" title="Frequently Asked" align="center" titleStyle="script" />
         <div className="mt-12 border-t border-border">{wedding.faq.map((item) => <details key={item.question} className="group border-b border-border py-5"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 font-serif text-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"><span>{item.question}</span><span aria-hidden="true" className="text-accent transition-transform group-open:rotate-45">+</span></summary><p className="pb-3 pr-10 font-sans text-sm leading-7 text-muted">{item.answer}</p></details>)}</div>
       </Container>
     </section>

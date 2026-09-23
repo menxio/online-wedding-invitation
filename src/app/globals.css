@@ -8,6 +8,11 @@
   --wedding-color-primary: #681c2f;
   --wedding-color-accent: #b78a3b;
   --wedding-color-border: #d9c8ba;
+  --wedding-motif-rose-pink: #de6e9b;
+  --wedding-motif-blush-rose: #e38eae;
+  --wedding-motif-soft-pink: #e7afc2;
+  --wedding-motif-petal-pink: #efcdd8;
+  --wedding-motif-pearl-pink: #f4e3e9;
   --wedding-radius-small: 0.25rem;
   --wedding-radius-medium: 0.75rem;
   --wedding-radius-large: 1.5rem;
@@ -75,14 +80,14 @@ body {
   width: 0.85rem;
   height: 0.5rem;
   border-radius: 85% 15% 80% 20%;
-  background: linear-gradient(135deg, #e8a1a9, #9f3d52 75%);
+  background: linear-gradient(135deg, #efcdd8, #de6e9b 75%);
   box-shadow: 0 0.25rem 0.75rem rgb(30 0 8 / 22%);
   opacity: 0;
   animation: petal-fall var(--petal-duration) linear var(--petal-delay) infinite;
 }
 
 .falling-petal:nth-child(3n) {
-  background: linear-gradient(135deg, #f0c5c0, #b55768 75%);
+  background: linear-gradient(135deg, #f4e3e9, #e38eae 75%);
 }
 
 .falling-petal:nth-child(even) {

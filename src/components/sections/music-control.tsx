@@ -55,6 +55,7 @@ export function MusicControl({ music }: { music: WeddingConfig["music"] }) {
               title={music.title}
               description={`${music.artist} — ${music.requestedVersion}`}
               align="center"
+              titleStyle="script"
             />
             <iframe
               src={spotifyEmbedUrl}

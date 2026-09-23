@@ -18,6 +18,7 @@ export function DetailsSection({ wedding }: { wedding: WeddingConfig }) {
           description={wedding.details.introduction}
           align="center"
           inverse
+          titleStyle="script"
         />
 
         <ol className="mx-auto mt-14 grid max-w-6xl gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-2 lg:grid-cols-6">

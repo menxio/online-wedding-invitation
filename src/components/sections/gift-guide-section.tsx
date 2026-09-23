@@ -8,7 +8,7 @@ export function GiftGuideSection({ wedding }: { wedding: WeddingConfig }) {
     <section
       id="giftGuide"
       aria-labelledby="gift-guide-title"
-      className="bg-[#f4eadf] py-[var(--wedding-spacing-section)]"
+      className="bg-[linear-gradient(135deg,#fffaf4_0%,#f4e3e9_58%,#efcdd8_140%)] py-[var(--wedding-spacing-section)]"
     >
       <Container>
         <div className="mx-auto max-w-5xl border border-border bg-surface px-6 py-14 shadow-[var(--wedding-shadow-soft)] sm:px-12 lg:px-20 lg:py-20">
@@ -18,6 +18,7 @@ export function GiftGuideSection({ wedding }: { wedding: WeddingConfig }) {
             title={wedding.giftGuide.title}
             description={wedding.giftGuide.message}
             align="center"
+            titleStyle="script"
           />
 
           {wedding.giftGuide.accounts.length > 0 ? (

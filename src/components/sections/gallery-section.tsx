@@ -7,9 +7,9 @@ export function GallerySection({ wedding }: { wedding: WeddingConfig }) {
   if (wedding.gallery.length === 0) return null;
 
   return (
-    <section id="gallery" aria-labelledby="gallery-title" className="overflow-hidden bg-[#f8f2e9] py-[var(--wedding-spacing-section)]">
+    <section id="gallery" aria-labelledby="gallery-title" className="overflow-hidden bg-[linear-gradient(180deg,#fffaf4_0%,#f4e3e9_100%)] py-[var(--wedding-spacing-section)]">
       <Container>
-        <SectionHeading id="gallery-title" eyebrow="Engagement photographs" title="Gallery" />
+        <SectionHeading id="gallery-title" eyebrow="Engagement photographs" title="Captured Moments" align="center" titleStyle="script" />
         <div className="mt-14 columns-1 gap-4 sm:columns-2 lg:columns-3">
           {wedding.gallery.map((image, index) => (
             <figure key={image.src} className="group relative mb-4 break-inside-avoid overflow-hidden bg-[#ded2c4]">
