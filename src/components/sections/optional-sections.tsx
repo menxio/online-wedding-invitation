@@ -35,7 +35,14 @@ export function StorySection({ wedding }: { wedding: WeddingConfig }) {
       <Container className="relative z-30 max-w-6xl">
         <article className="mx-auto max-w-5xl">
           <div className="text-center">
-            <SectionHeading id="story-title" eyebrow="How it began" title={wedding.story.heading} align="center" titleStyle="script" />
+            <SectionHeading
+              id="story-title"
+              eyebrow="How it began"
+              title={wedding.story.heading}
+              description="Every love story is beautiful — but ours is our favorite."
+              align="center"
+              titleStyle="script"
+            />
           </div>
 
           <div className="mt-12 border-y border-border bg-white/45 px-6 py-10 shadow-[0_24px_70px_rgba(73,34,42,0.06)] sm:px-10 sm:py-12 lg:px-14">

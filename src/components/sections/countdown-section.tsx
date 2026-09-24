@@ -47,6 +47,9 @@ export function CountdownSection({ target }: { target: string }) {
             </div>
           ))}
         </div>
+        <p className="mt-12 font-serif text-lg leading-8 text-[#a84a6c] italic sm:text-xl">
+          Until we say I do.
+        </p>
       </div>
     </section>
   );

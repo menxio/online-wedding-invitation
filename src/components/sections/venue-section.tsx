@@ -8,7 +8,14 @@ export function VenueSection({ wedding }: { wedding: WeddingConfig }) {
   return (
     <section id="venue" aria-labelledby="venue-title" className="bg-[linear-gradient(180deg,#f4e3e9_0%,#fffaf4_100%)] py-[var(--wedding-spacing-section)]">
       <Container>
-        <SectionHeading id="venue-title" eyebrow="Wedding locations" title="Where We Celebrate" align="center" titleStyle="script" />
+        <SectionHeading
+          id="venue-title"
+          eyebrow="Wedding locations"
+          title="Where Our Forever Begins"
+          description="The cherished places where we will exchange our vows and celebrate with those we love."
+          align="center"
+          titleStyle="script"
+        />
         <div className="mx-auto mt-14 grid max-w-6xl items-start gap-6 md:grid-cols-2 lg:gap-8">
           {wedding.events.map((event) => (
             <article key={event.id} className="overflow-hidden border border-[#cdbca8] bg-[#f8f0e6] shadow-[0_1.5rem_4rem_rgba(74,41,38,0.08)]">

@@ -50,7 +50,7 @@ export const weddingConfig = weddingConfigSchema.parse({
     announcement: NEEDS_COUPLE_APPROVAL,
   },
   story: {
-    heading: "Our Love Story",
+    heading: "A Story Worth Telling",
     paragraphs: [
       "Our love story began in the simplest and most unexpected way. When my partner started working at a company near our carinderia, our paths slowly crossed. That was where we first met, because he and his co-workers would often eat there. Little did we know that we would eventually grow fond of each other—and before we knew it, something beautiful had begun.",
       "At that time, I was still a student at CMU. I even invited him to be my partner at our Senior’s Ball, never knowing that the person beside me that night would one day become the person I would choose to spend my whole life with.",

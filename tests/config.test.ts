@@ -52,7 +52,7 @@ describe("template configuration", () => {
     expect(sectionsConfig.enabled.entourage).toBe(true);
     expect(sectionsConfig.enabled.story).toBe(true);
     expect(weddingConfig.story).toMatchObject({
-      heading: "Our Love Story",
+      heading: "A Story Worth Telling",
       image: null,
     });
     expect(weddingConfig.story?.paragraphs).toHaveLength(7);

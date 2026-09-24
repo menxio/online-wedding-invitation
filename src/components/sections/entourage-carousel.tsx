@@ -12,6 +12,11 @@ type EntouragePanel = {
 };
 
 const secondarySponsorRoles = new Set(["Candle Sponsors", "Veil Sponsors", "Cord Sponsors"]);
+const secondarySponsorHeadings: Record<string, string> = {
+  "Candle Sponsors": "To light our path",
+  "Veil Sponsors": "To clothe us as one",
+  "Cord Sponsors": "To bind us together",
+};
 
 function createPanels(groups: WeddingConfig["entourage"]): EntouragePanel[] {
   const isPrincipal = ({ role }: EntourageGroup) => role.startsWith("Parents of") || role.startsWith("Principal Sponsors");
@@ -139,7 +144,9 @@ export function EntourageCarousel({ groups }: { groups: WeddingConfig["entourage
               <div className={`mt-10 grid gap-x-10 gap-y-10 ${panel.id === "secondary" ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
                 {panel.groups.map((group) => (
                   <section key={group.role} className="text-center">
-                    <h3 className="font-script text-3xl leading-tight text-[#c6537f] sm:text-4xl">{group.role}</h3>
+                    <h3 className="font-script text-3xl leading-tight text-[#c6537f] sm:text-4xl">
+                      {secondarySponsorHeadings[group.role] ?? group.role}
+                    </h3>
                     <ul className="mt-3 space-y-1 font-sans text-sm leading-6 text-[#734455] sm:text-base sm:leading-7">
                       {group.names.map((name) => <li key={name}>{name}</li>)}
                     </ul>

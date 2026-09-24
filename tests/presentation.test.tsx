@@ -29,7 +29,9 @@ describe("invitation presentation", () => {
     fireEvent.click(screen.getByRole("tab", { name: "Secondary Sponsors" }));
 
     const secondaryPanel = screen.getByRole("tabpanel", { name: "Secondary Sponsors" });
-    expect(within(secondaryPanel).getByText("Candle Sponsors")).toBeInTheDocument();
+    expect(within(secondaryPanel).getByText("To light our path")).toBeInTheDocument();
+    expect(within(secondaryPanel).getByText("To clothe us as one")).toBeInTheDocument();
+    expect(within(secondaryPanel).getByText("To bind us together")).toBeInTheDocument();
     expect(within(secondaryPanel).getByText("Mark Louis R. Rubiato")).toBeInTheDocument();
   });
 });
