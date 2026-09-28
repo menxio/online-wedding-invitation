@@ -31,10 +31,11 @@ const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://michael-and-marris.vercel.app";
 const title = `${weddingConfig.couple.partnerA} & ${weddingConfig.couple.partnerB} | Wedding Invitation`;
 const description = `The wedding invitation of ${weddingConfig.couple.fullNameA} and ${weddingConfig.couple.fullNameB}.`;
-const socialImage = weddingConfig.hero.image ?? {
-  src: "/wedding/hero/hero.jpg",
-  width: 6000,
-  height: 4000,
+const socialImagePath = "/wedding/hero/social-preview.jpg";
+const socialImage = {
+  url: socialImagePath,
+  width: 1200,
+  height: 630,
   alt: `${weddingConfig.couple.partnerA} and ${weddingConfig.couple.partnerB}`,
 };
 
@@ -47,6 +48,7 @@ export const metadata: Metadata = {
     description,
     url: "/",
     siteName: `${weddingConfig.couple.partnerA} & ${weddingConfig.couple.partnerB}`,
+    images: [socialImage],
     locale: "en_PH",
     type: "website",
   },
@@ -54,7 +56,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: [socialImage.src],
+    images: [socialImagePath],
   },
   robots: { index: false, follow: false },
 };
