@@ -47,14 +47,6 @@ export const metadata: Metadata = {
     description,
     url: "/",
     siteName: `${weddingConfig.couple.partnerA} & ${weddingConfig.couple.partnerB}`,
-    images: [
-      {
-        url: socialImage.src,
-        width: socialImage.width,
-        height: socialImage.height,
-        alt: socialImage.alt,
-      },
-    ],
     locale: "en_PH",
     type: "website",
   },
